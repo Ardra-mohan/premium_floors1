@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
 
 function App() {
@@ -12,16 +12,15 @@ function App() {
     offset: ["start start", "end start"]
   });
 
-  const torchSize = useTransform(scrollYProgress, [0, 0.4], [15, 150]);
+  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 60, restDelta: 0.001 });
+
+  const torchSize = useTransform(smoothProgress, [0, 0.4], [15, 150]);
   const torchBg = useMotionTemplate`radial-gradient(circle at 50% 50%, transparent ${torchSize}vw, rgba(10,10,10,0.98) calc(${torchSize}vw + 10vw))`;
 
-  const bgScale = useTransform(scrollYProgress, [0.4, 1], [1, 2.5]);
+  const bgScale = useTransform(smoothProgress, [0.4, 1], [1, 2.5]);
 
-  const textOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
-
-  const galleryOpacity = useTransform(scrollYProgress, [0.6, 0.9], [0, 1]);
-  const galleryY = useTransform(scrollYProgress, [0.6, 0.9], [50, 0]);
+  const textOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
+  const textY = useTransform(smoothProgress, [0, 0.3], [0, -100]);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -87,31 +86,6 @@ function App() {
             <p className="text-lg md:text-2xl text-sand/80 font-light max-w-2xl mx-auto drop-shadow-md">
               Bespoke turnkey solutions, elite MEP systems, and premium architectural finishes defining Dubai's modern luxury.
             </p>
-          </motion.div>
-
-          {/* Floor Ideas Gallery Fades In */}
-          <motion.div
-            style={{ opacity: galleryOpacity, y: galleryY, pointerEvents: "none" }}
-            className="absolute inset-0 z-30 flex flex-col items-center justify-center px-6"
-          >
-            <h2 className="text-4xl font-heading text-white mb-10 drop-shadow-lg">Discover Our Collections</h2>
-            <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-matte-black/70 backdrop-blur-md p-8 border border-white/10 text-center pointer-events-auto hover:-translate-y-2 transition-transform duration-300">
-                <img src="/extracted/brochure_img_70.jpg" alt="Resin" className="w-full h-48 object-cover mb-6 border border-white/5" />
-                <h3 className="text-xl font-heading text-gold mb-2">Premium Resin</h3>
-                <p className="text-white/70 text-sm">Seamless, high-gloss finishes for modern spaces.</p>
-              </div>
-              <div className="bg-matte-black/70 backdrop-blur-md p-8 border border-white/10 text-center pointer-events-auto hover:-translate-y-2 transition-transform duration-300">
-                <img src="/extracted/brochure_img_72.jpg" alt="Hardwood" className="w-full h-48 object-cover mb-6 border border-white/5" />
-                <h3 className="text-xl font-heading text-gold mb-2">Luxury Hardwood</h3>
-                <p className="text-white/70 text-sm">Timeless grains & engineered perfection.</p>
-              </div>
-              <div className="bg-matte-black/70 backdrop-blur-md p-8 border border-white/10 text-center pointer-events-auto hover:-translate-y-2 transition-transform duration-300">
-                <img src="/extracted/brochure_img_74.jpg" alt="Marble" className="w-full h-48 object-cover mb-6 border border-white/5" />
-                <h3 className="text-xl font-heading text-gold mb-2">Italian Marble</h3>
-                <p className="text-white/70 text-sm">Classic stone veins, unmatched elegance.</p>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -311,8 +285,8 @@ function ServiceCard({ title, items, delay }) {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, delay }}
-      className="bg-white p-10 border border-sand/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group"
+      transition={{ type: "spring", stiffness: 100, damping: 20, delay }}
+      className="bg-white p-10 border border-sand/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group will-change-transform"
     >
       <h3 className="text-2xl font-heading text-matte-black mb-6 border-b border-sand/30 pb-4 group-hover:border-gold transition-colors">{title}</h3>
       <ul className="space-y-4 text-charcoal/80 font-light">
@@ -369,7 +343,9 @@ function ExpertiseLayersSection() {
     offset: ["start start", "end start"]
   });
 
-  const zExpanded = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
+  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 60, restDelta: 0.001 });
+
+  const zExpanded = useTransform(smoothProgress, [0, 0.7], [0, 1]);
 
   const tileZ = useTransform(zExpanded, v => `${v * 200}px`);
   const heatingZ = useTransform(zExpanded, v => `${v * 100}px`);
