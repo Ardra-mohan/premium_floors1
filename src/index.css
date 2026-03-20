@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #FFFFF0;
+  --color-sand: #E6D5B8;
+  --color-matte-black: #121212;
+  --color-charcoal: #222222;
+  --color-gold: #C5A059;
+
+  --font-heading: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-ivory text-charcoal font-sans antialiased overflow-x-hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight text-matte-black;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
