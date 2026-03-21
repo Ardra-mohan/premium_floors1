@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
+import Lenis from 'lenis';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -12,22 +13,36 @@ function App() {
     offset: ["start start", "end start"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 60, restDelta: 0.001 });
-
-  const torchSize = useTransform(smoothProgress, [0, 0.4], [15, 150]);
+  const torchSize = useTransform(scrollYProgress, [0, 0.4], [15, 150]);
   const torchBg = useMotionTemplate`radial-gradient(circle at 50% 50%, transparent ${torchSize}vw, rgba(10,10,10,0.98) calc(${torchSize}vw + 10vw))`;
 
-  const bgScale = useTransform(smoothProgress, [0.4, 1], [1, 2.5]);
+  const bgScale = useTransform(scrollYProgress, [0.4, 1], [1, 2.5]);
 
-  const textOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
-  const textY = useTransform(smoothProgress, [0, 0.3], [0, -100]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
 
   React.useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.05,
+      smoothWheel: true,
+      syncTouch: true,
+    });
+
+    const raf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      lenis.destroy();
+    };
   }, []);
 
   return (
@@ -35,16 +50,22 @@ function App() {
       <CursorSparkles />
       {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass bg-ivory/95 shadow-sm py-2' : 'bg-transparent py-4'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div className={`text-2xl font-heading font-bold tracking-wider transition-colors duration-300 ${isScrolled ? 'text-matte-black' : 'text-gold'}`}>
+        <div className="w-full mx-auto px-6 md:px-12 lg:px-20 flex justify-between items-center relative h-12">
+
+          <div
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`cursor-pointer text-2xl font-heading font-bold tracking-wider transition-colors duration-300 ${isScrolled ? 'text-matte-black' : 'text-gold'}`}
+          >
             PREMIUM <span className="text-gold">FLOORS</span>
           </div>
 
           <div className={`hidden md:flex space-x-8 text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? 'text-charcoal' : 'text-ivory'}`}>
-            <a href="#about" className="hover:text-gold transition-colors">About</a>
-            <a href="#services" className="hover:text-gold transition-colors">Services</a>
-            <a href="#projects" className="hover:text-gold transition-colors">Projects</a>
-            <a href="#contact" className="hover:text-gold transition-colors">Contact</a>
+            <a href="#about" className="hover:text-gold transition-colors block">About</a>
+            <a href="#services" className="hover:text-gold transition-colors block">Services</a>
+            <a href="#projects" className="hover:text-gold transition-colors block">Projects</a>
+            <a href="#contact" className="hover:text-gold transition-colors block">Contact</a>
           </div>
 
           <button
@@ -343,9 +364,7 @@ function ExpertiseLayersSection() {
     offset: ["start start", "end start"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 60, restDelta: 0.001 });
-
-  const zExpanded = useTransform(smoothProgress, [0, 0.7], [0, 1]);
+  const zExpanded = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
 
   const tileZ = useTransform(zExpanded, v => `${v * 200}px`);
   const heatingZ = useTransform(zExpanded, v => `${v * 100}px`);
