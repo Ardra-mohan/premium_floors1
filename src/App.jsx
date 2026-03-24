@@ -49,27 +49,29 @@ function App() {
     <div className="min-h-screen bg-ivory flex flex-col">
       <CursorSparkles />
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass bg-ivory/95 shadow-sm py-2' : 'bg-transparent py-4'}`}>
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass bg-matte-black/95 border-b border-white/10 shadow-sm py-2' : 'bg-transparent py-4'}`}>
         <div className="w-full mx-auto px-6 md:px-12 lg:px-20 flex justify-between items-center relative h-12">
 
           <div
             onClick={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className={`cursor-pointer text-2xl font-heading font-bold tracking-wider transition-colors duration-300 ${isScrolled ? 'text-matte-black' : 'text-gold'}`}
+            className={`cursor-pointer text-2xl font-heading font-bold tracking-wider transition-colors duration-300 text-gold`}
           >
             PREMIUM <span className="text-gold">FLOORS</span>
           </div>
 
-          <div className={`hidden md:flex space-x-8 text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? 'text-charcoal' : 'text-ivory'}`}>
-            <a href="#about" className="hover:text-gold transition-colors block">About</a>
-            <a href="#services" className="hover:text-gold transition-colors block">Services</a>
-            <a href="#projects" className="hover:text-gold transition-colors block">Projects</a>
-            <a href="#contact" className="hover:text-gold transition-colors block">Contact</a>
+          <div className={`hidden md:flex space-x-8 text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? 'text-gold' : 'text-ivory'}`}>
+            <a href="#about" className="hover:text-white transition-colors block">About</a>
+            <a href="#services" className="hover:text-white transition-colors block">Services</a>
+            <a href="#epoxy" className="hover:text-white transition-colors block">Epoxy System</a>
+            <a href="#projects" className="hover:text-white transition-colors block">Projects</a>
+            <a href="#careers" className="hover:text-white transition-colors block">Careers</a>
+            <a href="#contact" className="hover:text-white transition-colors block">Contact</a>
           </div>
 
           <button
-            className={`md:hidden transition-colors duration-300 ${isScrolled ? 'text-charcoal' : 'text-ivory'}`}
+            className={`md:hidden transition-colors duration-300 ${isScrolled ? 'text-gold' : 'text-ivory'}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -176,6 +178,28 @@ function App() {
         </div>
       </section>
 
+      {/* Epoxy Specialties Section */}
+      <section id="epoxy" className="py-24 bg-matte-black text-ivory border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-heading mb-6 text-white tracking-widest uppercase">Industrial & Commercial Epoxy</h2>
+            <p className="text-sand/80 font-light max-w-2xl mx-auto text-lg mb-8">
+              Our advanced resin solutions deliver hyper-durable, <strong className="text-gold font-normal">joint-free seamless surfaces</strong> designed to withstand the heaviest traffic.
+            </p>
+            <span className="text-gold/90 uppercase tracking-widest text-sm font-bold border border-gold/30 px-6 py-3 rounded-full shadow-[0_0_15px_rgba(197,160,89,0.2)]">
+              Backed by up to 15 Years Warranty
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img="/extracted/brochure_img_10.jpg" />
+            <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_42.jpg" />
+            <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_44.jpg" />
+            <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_46.jpg" />
+          </div>
+        </div>
+      </section>
+
       {/* Projects Showcase */}
       <section id="projects" className="py-24 md:py-32 bg-matte-black text-ivory">
         <div className="px-6 max-w-7xl mx-auto">
@@ -250,6 +274,19 @@ function App() {
               </div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Careers Section */}
+      <section id="careers" className="py-24 md:py-32 bg-ivory text-matte-black border-t border-sand/30">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-6xl font-heading mb-6 text-matte-black">Join Our Legacy</h2>
+          <p className="text-lg md:text-xl text-charcoal/80 font-light max-w-2xl mx-auto mb-12">
+            We are actively seeking exceptional talent—from master craftsmen to site engineers and visionary designers—to help build the future of Dubai.
+          </p>
+          <a href="mailto:careers@premiumfloors.com" className="inline-block bg-matte-black text-gold px-12 py-4 font-bold tracking-widest uppercase text-sm hover:bg-charcoal transition-colors duration-300">
+            View Openings
+          </a>
         </div>
       </section>
 
@@ -409,53 +446,73 @@ function ExpertiseLayersSection() {
           {/* Layer 1: Concrete */}
           <motion.div
             style={{ translateZ: concreteZ }}
-            className="absolute inset-0 bg-[#E0E0E0] border border-gray-400 shadow-[20px_20px_50px_rgba(0,0,0,0.5)] flex items-end justify-end p-4 transition-transform duration-75"
+            className="absolute inset-0 bg-[#E0E0E0] border border-gray-400 shadow-[20px_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-75"
           >
-            <motion.span style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom right" }} className="text-sm font-semibold text-gray-700 uppercase tracking-widest translate-x-12 translate-y-12 block">
-              Structural Concrete
-            </motion.span>
+            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -bottom-8 -right-8 flex flex-col items-center z-10">
+              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-300 text-xs md:text-sm font-bold text-gray-800 uppercase tracking-widest whitespace-nowrap">
+                Structural Concrete
+              </div>
+              <div className="w-[1.5px] h-8 bg-gray-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 2: Insulation */}
           <motion.div
             style={{ translateZ: insulationZ }}
-            className="absolute inset-0 bg-[#F5EEDC] border border-[#D1C2A5] shadow-[0_20px_40px_rgba(0,0,0,0.2)] flex items-end justify-start p-4 transition-transform duration-75"
+            className="absolute inset-0 bg-[#F5EEDC] border border-[#D1C2A5] shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-transform duration-75"
           >
-            <motion.span style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom left" }} className="text-sm font-semibold text-[#8C7A54] uppercase tracking-widest -translate-x-12 translate-y-12 block">
-              Acoustic Insulation
-            </motion.span>
+            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -bottom-8 -left-8 flex flex-col items-center z-10">
+              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-[#D1C2A5] text-xs md:text-sm font-bold text-[#8C7A54] uppercase tracking-widest whitespace-nowrap">
+                Acoustic Insulation
+              </div>
+              <div className="w-[1.5px] h-8 bg-gray-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 3: MEP & Wiring */}
           <motion.div
             style={{ translateZ: wiringZ }}
-            className="absolute inset-0 border border-blue-300 bg-blue-50/40 shadow-[0_15px_30px_rgba(0,0,0,0.1)] flex items-start justify-end p-4 drop-shadow-md transition-transform duration-75"
+            className="absolute inset-0 border border-blue-300 bg-blue-50/40 shadow-[0_15px_30px_rgba(0,0,0,0.1)] drop-shadow-md transition-transform duration-75"
           >
             <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%)] bg-[size:30px_30px]"></div>
 
-            <motion.span style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top right" }} className="text-sm font-semibold text-blue-600 uppercase tracking-widest translate-x-12 -translate-y-12 block relative z-10">
-              MEP / Wiring
-            </motion.span>
+            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -top-16 -right-12 flex flex-col items-center z-10">
+              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-blue-300 text-xs md:text-sm font-bold text-blue-700 uppercase tracking-widest whitespace-nowrap">
+                MEP / Wiring
+              </div>
+              <div className="w-[1.5px] h-12 bg-blue-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 4: Heating */}
           <motion.div
             style={{ translateZ: heatingZ }}
-            className="absolute inset-0 bg-red-50/50 border border-red-300 shadow-[0_15px_30px_rgba(0,0,0,0.15)] flex items-start justify-start p-4 transition-transform duration-75"
+            className="absolute inset-0 bg-red-50/50 border border-red-300 shadow-[0_15px_30px_rgba(0,0,0,0.15)] transition-transform duration-75"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(248,113,113,0.3)_0,transparent_10px)] bg-[size:25px_25px]"></div>
-            <motion.span style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }} className="text-sm font-semibold text-red-500 uppercase tracking-widest -translate-x-12 -translate-y-12 block relative z-10">
-              Radiant Heating
-            </motion.span>
+            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -top-16 -left-12 flex flex-col items-center z-10">
+              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-red-300 text-xs md:text-sm font-bold text-red-600 uppercase tracking-widest whitespace-nowrap">
+                Radiant Heating
+              </div>
+              <div className="w-[1.5px] h-12 bg-red-400"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 5: Tile/Finishes */}
           <motion.div
             style={{ translateZ: tileZ }}
-            className="absolute inset-0 bg-white border border-gray-100 shadow-[0_40px_60px_rgba(0,0,0,0.3)] flex items-center justify-center bg-[url('/extracted/brochure_img_38.jpg')] bg-cover transition-transform duration-75"
+            className="absolute inset-0 bg-white border border-gray-100 shadow-[0_40px_60px_rgba(0,0,0,0.3)] bg-[url('/extracted/brochure_img_38.jpg')] bg-cover transition-transform duration-75"
           >
-            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)" }} className="bg-white/95 backdrop-blur-sm px-6 py-3 shadow-lg border border-sand/30 text-xs md:text-sm font-semibold text-matte-black uppercase tracking-widest absolute -top-16">
-              Premium Marble Finish
+            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -top-20 left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
+              <div className="bg-white/95 backdrop-blur-md px-6 py-3 shadow-[0_15px_40px_rgba(0,0,0,0.2)] border border-sand/40 text-sm md:text-base font-bold text-matte-black uppercase tracking-widest whitespace-nowrap">
+                Premium Marble Finish
+              </div>
+              <div className="w-[1.5px] h-12 bg-sand"></div>
+              <div className="w-3 h-3 rounded-full bg-gold shadow-lg border-[2px] border-white -mt-1"></div>
             </motion.div>
           </motion.div>
 
