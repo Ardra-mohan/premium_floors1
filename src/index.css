@@ -7,8 +7,8 @@
   --color-charcoal: #222222;
   --color-gold: #C5A059;
 
-  --font-heading: 'Playfair Display', serif;
-  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'GFS Didot', serif;
+  --font-sans: 'Open Sans', sans-serif;
 }
 
 @layer base {

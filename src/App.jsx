@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
 import Lenis from 'lenis';
+import mainImage from './assets/main image.jpeg';
+import logoImg from './assets/logo.png';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -53,12 +55,22 @@ function App() {
         <div className="w-full mx-auto px-6 md:px-12 lg:px-20 flex justify-between items-center relative h-12">
 
           <div
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`cursor-pointer text-2xl font-heading font-bold tracking-wider transition-colors duration-300 text-gold`}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={`cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95`}
+            aria-label="Premium Floors Home"
           >
-            PREMIUM <span className="text-gold">FLOORS</span>
+            <div
+              style={{
+                maskImage: `url(${logoImg})`,
+                WebkitMaskImage: `url(${logoImg})`,
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+                backgroundColor: '#C5A059'
+              }}
+              className="h-16 md:h-24 w-40 md:w-56"
+            />
           </div>
 
           <div className={`hidden md:flex space-x-8 text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? 'text-gold' : 'text-ivory'}`}>
@@ -77,6 +89,40 @@ function App() {
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <motion.div
+          initial={false}
+          animate={isMenuOpen ? { x: 0, opacity: 1 } : { x: '100%', opacity: 0 }}
+          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          className="fixed inset-0 bg-matte-black/95 backdrop-blur-xl z-[60] flex flex-col items-center justify-center space-y-8 md:hidden"
+        >
+          <div
+            style={{
+              maskImage: `url(${logoImg})`,
+              WebkitMaskImage: `url(${logoImg})`,
+              maskRepeat: 'no-repeat',
+              WebkitMaskRepeat: 'no-repeat',
+              maskSize: 'contain',
+              WebkitMaskSize: 'contain',
+              backgroundColor: '#C5A059'
+            }}
+            className="h-28 w-60 mb-8"
+          />
+          <div className="flex flex-col items-center space-y-6 text-xl tracking-[0.2em] uppercase text-gold">
+            <a href="#about" onClick={() => setIsMenuOpen(false)} className="hover:text-white">About</a>
+            <a href="#services" onClick={() => setIsMenuOpen(false)} className="hover:text-white">Services</a>
+            <a href="#epoxy" onClick={() => setIsMenuOpen(false)} className="hover:text-white">Epoxy System</a>
+            <a href="#projects" onClick={() => setIsMenuOpen(false)} className="hover:text-white">Projects</a>
+            <a href="#contact" onClick={() => setIsMenuOpen(false)} className="hover:text-white">Contact</a>
+          </div>
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="mt-12 w-12 h-12 border border-gold/30 rounded-full flex items-center justify-center text-gold"
+          >
+            <X size={24} />
+          </button>
+        </motion.div>
       </nav>
 
       {/* Hero Section */}
@@ -86,8 +132,8 @@ function App() {
 
           {/* Base Floor Image (Zooms in) */}
           <motion.div
-            style={{ scale: bgScale, transformOrigin: "50% 50%" }}
-            className="absolute inset-0 w-full h-full bg-[url('/extracted/brochure_img_68.jpg')] bg-cover bg-center bg-no-repeat"
+            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainImage}")` }}
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           />
 
           {/* Torch Overlay */}
@@ -101,13 +147,14 @@ function App() {
             style={{ opacity: textOpacity, y: textY }}
             className="relative z-20 text-center px-8 py-12 md:px-16 md:py-16 max-w-4xl mx-auto mt-20 bg-black/30 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
           >
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-heading mb-6 text-white drop-shadow-2xl">
-              Bringing Light To
-              <br />
-              <span className="text-gold">Luxury Floors.</span>
+            <span className="block text-gold uppercase tracking-[0.4em] text-sm md:text-base mb-6 font-heading animate-pulse">
+              Bold. Refined. Iconic.
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-heading mb-8 text-white drop-shadow-2xl leading-none">
+              Redefining <br /> Modern Luxury
             </h1>
-            <p className="text-lg md:text-2xl text-sand/80 font-light max-w-2xl mx-auto drop-shadow-md">
-              Bespoke turnkey solutions, elite MEP systems, and premium architectural finishes defining Dubai's modern luxury.
+            <p className="text-lg md:text-2xl text-white/90 font-sans font-light max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+              We combine cutting-edge materials with timeless design principles to create spaces that embody sophistication and contemporary elegance.
             </p>
           </motion.div>
         </div>
@@ -291,46 +338,58 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 md:py-32 bg-matte-black text-ivory px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gold/5"></div>
+      <section id="contact" className="py-24 md:py-32 bg-white text-matte-black px-6 relative overflow-hidden border-t border-sand/30">
+        <div className="absolute inset-0 bg-sand/10"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-heading mb-6 text-white">Start Your Project</h2>
-          <p className="text-xl text-sand/80 font-light mb-16">
+          <h2 className="text-4xl md:text-6xl font-heading mb-6 text-matte-black">Start Your Project</h2>
+          <p className="text-xl text-charcoal/80 font-light mb-16">
             Partner with us to build complete luxury environments.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             <div className="flex flex-col items-center group">
-              <div className="w-16 h-16 border border-gold/30 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
-                <Phone className="text-gold" />
+              <div className="w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
+                <Phone className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Call Us</h3>
-              <p className="text-sand/70 font-light">+971 4 123 4567</p>
+              <p className="text-charcoal/70 font-light">+971 4 123 4567</p>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-16 h-16 border border-gold/30 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
-                <Mail className="text-gold" />
+              <div className="w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
+                <Mail className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Email</h3>
-              <p className="text-sand/70 font-light">info@premiumfloors.ae</p>
+              <p className="text-charcoal/70 font-light">info@premiumfloors.ae</p>
             </div>
             <div className="flex flex-col items-center group">
-              <div className="w-16 h-16 border border-gold/30 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
-                <MapPin className="text-gold" />
+              <div className="w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
+                <MapPin className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Location</h3>
-              <p className="text-sand/70 font-light">Business Bay, Dubai, UAE</p>
+              <p className="text-charcoal/70 font-light">Business Bay, Dubai, UAE</p>
             </div>
           </div>
 
-          <a href="mailto:info@premiumfloors.ae" className="inline-flex items-center px-12 py-5 bg-gold text-matte-black hover:bg-white transition-colors duration-300 uppercase tracking-widest font-medium text-sm">
+          <a href="mailto:info@premiumfloors.ae" className="inline-flex items-center px-12 py-5 bg-matte-black text-white hover:bg-gold transition-colors duration-300 uppercase tracking-widest font-medium text-sm shadow-xl">
             Inquire Now
           </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-[#0a0a0a] border-t border-white/10 text-center text-sm text-sand/50 font-light">
+      <footer className="py-12 bg-[#0a0a0a] border-t border-white/10 text-center text-sm text-sand/50 font-light flex flex-col items-center">
+        <div
+          style={{
+            maskImage: `url(${logoImg})`,
+            WebkitMaskImage: `url(${logoImg})`,
+            maskRepeat: 'no-repeat',
+            WebkitMaskRepeat: 'no-repeat',
+            maskSize: 'contain',
+            WebkitMaskSize: 'contain',
+            backgroundColor: '#C5A059'
+          }}
+          className="h-18 w-44 mb-6 opacity-90 transition-all hover:scale-110"
+        />
         <p>&copy; {new Date().getFullYear()} Premium Floors LLC. All rights reserved. Crafted for Excellence.</p>
       </footer>
     </div>
@@ -396,6 +455,8 @@ function FeatureItem({ title, desc }) {
 
 function ExpertiseLayersSection() {
   const containerRef = React.useRef(null);
+  const [hoveredLayer, setHoveredLayer] = React.useState(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -446,74 +507,149 @@ function ExpertiseLayersSection() {
           {/* Layer 1: Concrete */}
           <motion.div
             style={{ translateZ: concreteZ }}
-            className="absolute inset-0 bg-[#E0E0E0] border border-gray-400 shadow-[20px_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-75"
+            animate={{ scale: hoveredLayer === 1 ? 1.05 : 1, filter: hoveredLayer === 1 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(197,160,89,0.5))' : 'brightness(1) drop-shadow(0 0 0px rgba(197,160,89,0))' }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="absolute inset-0 bg-[#E0E0E0] border border-gray-400 shadow-[20px_20px_50px_rgba(0,0,0,0.5)] cursor-pointer"
+            onMouseEnter={() => setHoveredLayer(1)}
+            onMouseLeave={() => setHoveredLayer(null)}
           >
-            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -bottom-8 -right-8 flex flex-col items-center z-10">
-              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-300 text-xs md:text-sm font-bold text-gray-800 uppercase tracking-widest whitespace-nowrap">
-                Structural Concrete
-              </div>
-              <div className="w-[1.5px] h-8 bg-gray-400"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
-            </motion.div>
+            <div className="absolute top-[80%] right-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
+              <motion.div
+                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }}
+                className="absolute top-1/2 left-1/2 flex items-start pointer-events-auto"
+              >
+                <svg width="60" height="60" className="absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
+                  <path d="M 0 0 L 20 20 L 50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                </svg>
+
+                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-12 translate-y-3">
+                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                    Structural Concrete
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Layer 2: Insulation */}
           <motion.div
             style={{ translateZ: insulationZ }}
-            className="absolute inset-0 bg-[#F5EEDC] border border-[#D1C2A5] shadow-[0_20px_40px_rgba(0,0,0,0.2)] transition-transform duration-75"
+            animate={{ scale: hoveredLayer === 2 ? 1.05 : 1, filter: hoveredLayer === 2 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(197,160,89,0.5))' : 'brightness(1) drop-shadow(0 0 0px rgba(197,160,89,0))' }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="absolute inset-0 bg-[#F5EEDC] border border-[#D1C2A5] shadow-[0_20px_40px_rgba(0,0,0,0.2)] cursor-pointer"
+            onMouseEnter={() => setHoveredLayer(2)}
+            onMouseLeave={() => setHoveredLayer(null)}
           >
-            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -bottom-8 -left-8 flex flex-col items-center z-10">
-              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-[#D1C2A5] text-xs md:text-sm font-bold text-[#8C7A54] uppercase tracking-widest whitespace-nowrap">
-                Acoustic Insulation
-              </div>
-              <div className="w-[1.5px] h-8 bg-gray-400"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
-            </motion.div>
+            <div className="absolute top-[80%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 translate-y-1/2 z-20">
+              <motion.div
+                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top right" }}
+                className="absolute top-1/2 right-1/2 flex items-start justify-end pointer-events-auto"
+              >
+                <svg width="60" height="60" className="absolute top-0 right-0 overflow-visible z-0 translate-x-[1px] -translate-y-[1px]">
+                  <path d="M 0 0 L -20 20 L -50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                </svg>
+
+                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-12 translate-y-3">
+                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                    Acoustic Insulation
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Layer 3: MEP & Wiring */}
           <motion.div
             style={{ translateZ: wiringZ }}
-            className="absolute inset-0 border border-blue-300 bg-blue-50/40 shadow-[0_15px_30px_rgba(0,0,0,0.1)] drop-shadow-md transition-transform duration-75"
+            animate={{ scale: hoveredLayer === 3 ? 1.05 : 1, filter: hoveredLayer === 3 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(96,165,250,0.6))' : 'brightness(1) drop-shadow(0 0 0px rgba(96,165,250,0))' }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="absolute inset-0 border border-blue-300 bg-blue-50/40 shadow-[0_15px_30px_rgba(0,0,0,0.1)] drop-shadow-md cursor-pointer"
+            onMouseEnter={() => setHoveredLayer(3)}
+            onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%)] bg-[size:30px_30px]"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%)] bg-[size:30px_30px] pointer-events-none"></div>
 
-            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -top-16 -right-12 flex flex-col items-center z-10">
-              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-blue-300 text-xs md:text-sm font-bold text-blue-700 uppercase tracking-widest whitespace-nowrap">
-                MEP / Wiring
-              </div>
-              <div className="w-[1.5px] h-12 bg-blue-400"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
-            </motion.div>
+            <div className="absolute bottom-0 right-[15%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
+              <motion.div
+                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }}
+                className="absolute top-1/2 left-1/2 flex items-start pointer-events-auto"
+              >
+                <svg width="60" height="60" className="absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
+                  <path d="M 0 0 L 20 20 L 50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                </svg>
+
+                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-12 translate-y-3">
+                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                    MEP / Wiring
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Layer 4: Heating */}
           <motion.div
             style={{ translateZ: heatingZ }}
-            className="absolute inset-0 bg-red-50/50 border border-red-300 shadow-[0_15px_30px_rgba(0,0,0,0.15)] transition-transform duration-75"
+            animate={{ scale: hoveredLayer === 4 ? 1.05 : 1, filter: hoveredLayer === 4 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(248,113,113,0.5))' : 'brightness(1) drop-shadow(0 0 0px rgba(248,113,113,0))' }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="absolute inset-0 bg-red-50/50 border border-red-300 shadow-[0_15px_30px_rgba(0,0,0,0.15)] cursor-pointer"
+            onMouseEnter={() => setHoveredLayer(4)}
+            onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(248,113,113,0.3)_0,transparent_10px)] bg-[size:25px_25px]"></div>
-            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -top-16 -left-12 flex flex-col items-center z-10">
-              <div className="bg-white/95 backdrop-blur-md px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-red-300 text-xs md:text-sm font-bold text-red-600 uppercase tracking-widest whitespace-nowrap">
-                Radiant Heating
-              </div>
-              <div className="w-[1.5px] h-12 bg-red-400"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-gold shadow-md border-[1.5px] border-white -mt-1"></div>
-            </motion.div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(248,113,113,0.3)_0,transparent_10px)] bg-[size:25px_25px] pointer-events-none"></div>
+
+            <div className="absolute top-[20%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20">
+              <motion.div
+                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom right" }}
+                className="absolute bottom-1/2 right-1/2 flex items-end justify-end pointer-events-auto"
+              >
+                <svg width="60" height="60" className="absolute bottom-0 right-0 overflow-visible z-0 translate-x-[1px] translate-y-[1px]">
+                  <path d="M 0 0 L -20 -20 L -50 -20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                </svg>
+
+                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-12 -translate-y-6">
+                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                    Radiant Heating
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Layer 5: Tile/Finishes */}
           <motion.div
             style={{ translateZ: tileZ }}
-            className="absolute inset-0 bg-white border border-gray-100 shadow-[0_40px_60px_rgba(0,0,0,0.3)] bg-[url('/extracted/brochure_img_38.jpg')] bg-cover transition-transform duration-75"
+            animate={{ scale: hoveredLayer === 5 ? 1.05 : 1, filter: hoveredLayer === 5 ? 'brightness(1.1) drop-shadow(0 0 40px rgba(197,160,89,0.7))' : 'brightness(1) drop-shadow(0 0 0px rgba(197,160,89,0))' }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="absolute inset-0 bg-white border border-gray-100 shadow-[0_40px_60px_rgba(0,0,0,0.3)] cursor-pointer overflow-hidden"
           >
-            <motion.div style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }} className="absolute -top-20 left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
-              <div className="bg-white/95 backdrop-blur-md px-6 py-3 shadow-[0_15px_40px_rgba(0,0,0,0.2)] border border-sand/40 text-sm md:text-base font-bold text-matte-black uppercase tracking-widest whitespace-nowrap">
-                Premium Marble Finish
-              </div>
-              <div className="w-[1.5px] h-12 bg-sand"></div>
-              <div className="w-3 h-3 rounded-full bg-gold shadow-lg border-[2px] border-white -mt-1"></div>
-            </motion.div>
+            {/* The Un-compressed Floor Image Hack */}
+            <div
+              className="absolute top-1/2 left-1/2 w-[150%] h-[150%] bg-[url('/extracted/brochure_img_68.jpg')] bg-cover bg-center pointer-events-none z-0"
+              style={{ transform: "translate(-50%, -50%) rotateZ(45deg) scaleY(2)" }}
+            />
+
+            <div
+              className="absolute top-0 left-[50%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20"
+              onMouseEnter={() => setHoveredLayer(5)}
+              onMouseLeave={() => setHoveredLayer(null)}
+            >
+              <motion.div
+                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }}
+                className="absolute bottom-1/2 left-1/2 flex items-end justify-center pointer-events-auto"
+              >
+                {/* Stem goes STRAIGHT UP */}
+                <svg width="60" height="60" className="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-visible z-0 translate-y-[1px]">
+                  <path d="M 0 0 L 0 -40" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                </svg>
+
+                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-1/2 -translate-y-[48px]">
+                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                    Premium Marble Finish
+                  </span>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
         </div>
