@@ -150,8 +150,8 @@ function App() {
             <span className="block text-gold uppercase tracking-[0.4em] text-sm md:text-base mb-6 font-heading animate-pulse">
               Bold. Refined. Iconic.
             </span>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-heading mb-8 text-white drop-shadow-2xl leading-none">
-              Redefining <br /> Modern Luxury
+            <h1 className="text-2xl md:text-5xl lg:text-6xl font-serif italic font-light mb-8 text-white drop-shadow-2xl leading-tight">
+              Redefining <br className="hidden md:block"/> Modern Luxury
             </h1>
             <p className="text-lg md:text-2xl text-white/90 font-sans font-light max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               We combine cutting-edge materials with timeless design principles to create spaces that embody sophistication and contemporary elegance.
@@ -161,7 +161,7 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 md:py-32 bg-ivory text-charcoal px-6">
+      <section id="about" className="relative z-10 py-24 md:py-32 bg-ivory text-charcoal px-6">
         <div className="max-w-5xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
@@ -248,7 +248,7 @@ function App() {
       </section>
 
       {/* Projects Showcase */}
-      <section id="projects" className="py-24 md:py-32 bg-matte-black text-ivory">
+      <section id="projects" className="py-24 md:py-32 bg-charcoal text-ivory">
         <div className="px-6 max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-heading mb-16 text-white border-b border-sand/20 pb-8">Featured Work</h2>
 
@@ -257,6 +257,11 @@ function App() {
             <ProjectCard title="Five Star Hotel Downtown" category="Hospitality" img="/extracted/brochure_img_27.jpg" />
             <ProjectCard title="Premium Commercial Hub" category="Commercial" img="/extracted/brochure_img_21.jpg" />
             <ProjectCard title="Penthouse Marina" category="Renovation" img="/extracted/brochure_img_50.jpg" />
+            
+            <ProjectCard title="M E P Works" category="Infrastructure" img="/extracted/brochure_img_61.jpg" />
+            <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_1.jpg" />
+            <ProjectCard title="False Ceiling" category="Interior" img="/extracted/brochure_img_14.jpg" />
+            <ProjectCard title="AC Electromechanical Works" category="Systems" img="/extracted/brochure_img_62.jpg" />
           </div>
         </div>
       </section>
@@ -285,7 +290,7 @@ function App() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-24 bg-sand/10 px-6">
+      <section className="py-24 bg-white px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-heading mb-16 text-matte-black">Trusted by the Best</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
@@ -325,7 +330,7 @@ function App() {
       </section>
 
       {/* Careers Section */}
-      <section id="careers" className="py-24 md:py-32 bg-ivory text-matte-black border-t border-sand/30">
+      <section id="careers" className="py-24 md:py-32 bg-sand/10 text-matte-black border-t border-sand/30">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-6xl font-heading mb-6 text-matte-black">Join Our Legacy</h2>
           <p className="text-lg md:text-xl text-charcoal/80 font-light max-w-2xl mx-auto mb-12">
@@ -425,13 +430,13 @@ function ProjectCard({ title, category, img }) {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="group relative overflow-hidden h-[400px] md:h-[600px] cursor-pointer"
+      className="group relative overflow-hidden h-[250px] md:h-[500px] cursor-pointer"
     >
       <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
       <div className="absolute inset-0 bg-gradient-to-t from-matte-black/90 via-matte-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
-      <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-        <p className="text-gold uppercase tracking-widest text-xs mb-2 font-medium">{category}</p>
-        <h3 className="text-2xl md:text-3xl font-heading text-white">{title}</h3>
+      <div className="absolute bottom-0 left-0 p-6 md:p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+        <p className="text-gold uppercase tracking-widest text-[10px] md:text-xs mb-2 font-medium">{category}</p>
+        <h3 className="text-xl md:text-3xl font-heading text-white">{title}</h3>
       </div>
     </motion.div>
   );
@@ -473,15 +478,15 @@ function ExpertiseLayersSection() {
   const opacityLabels = useTransform(zExpanded, [0.3, 1], [0, 1]);
 
   return (
-    <section ref={containerRef} className="relative h-[250vh] bg-ivory text-matte-black border-b border-sand/30">
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    <section ref={containerRef} className="relative z-20 h-[250vh] bg-white text-matte-black border-b border-sand/30">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-start md:justify-center pt-8 md:pt-0 overflow-hidden">
 
         <div className="relative text-center w-full px-6 z-20 mb-32 md:mb-48 mt-12 md:mt-0">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-heading mb-4 text-matte-black"
+            className="text-4xl md:text-5xl font-serif italic font-light mb-4 text-matte-black"
           >
             The Anatomy of Excellence
           </motion.h2>
@@ -497,7 +502,7 @@ function ExpertiseLayersSection() {
         </div>
 
         <div
-          className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]"
+          className="relative w-[85vw] h-[85vw] max-w-[320px] max-h-[320px] md:max-w-[450px] md:max-h-[450px] translate-y-12 md:translate-y-0"
           style={{
             perspective: "1200px",
             transformStyle: "preserve-3d",
@@ -509,21 +514,26 @@ function ExpertiseLayersSection() {
             style={{ translateZ: concreteZ }}
             animate={{ scale: hoveredLayer === 1 ? 1.05 : 1, filter: hoveredLayer === 1 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(197,160,89,0.5))' : 'brightness(1) drop-shadow(0 0 0px rgba(197,160,89,0))' }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute inset-0 bg-[#E0E0E0] border border-gray-400 shadow-[20px_20px_50px_rgba(0,0,0,0.5)] cursor-pointer"
+            className="absolute inset-0 bg-[#E0E0E0] border border-gray-400 shadow-[20px_20px_50px_rgba(0,0,0,0.5)] cursor-pointer z-10"
             onMouseEnter={() => setHoveredLayer(1)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="absolute top-[80%] right-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
+            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
+              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 1 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+                Structural Concrete
+              </span>
+            </div>
+            <div className="hidden md:block absolute top-[80%] right-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
               <motion.div
                 style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }}
                 className="absolute top-1/2 left-1/2 flex items-start pointer-events-auto"
               >
-                <svg width="60" height="60" className="absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
-                  <path d="M 0 0 L 20 20 L 50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
+                  <path d="M 0 0 L 10 10 L 25 10 md:M 0 0 L 20 20 L 50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
                 </svg>
 
-                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-12 translate-y-3">
-                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-2 md:translate-x-12 translate-y-3">
+                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
                     Structural Concrete
                   </span>
                 </div>
@@ -536,21 +546,26 @@ function ExpertiseLayersSection() {
             style={{ translateZ: insulationZ }}
             animate={{ scale: hoveredLayer === 2 ? 1.05 : 1, filter: hoveredLayer === 2 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(197,160,89,0.5))' : 'brightness(1) drop-shadow(0 0 0px rgba(197,160,89,0))' }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute inset-0 bg-[#F5EEDC] border border-[#D1C2A5] shadow-[0_20px_40px_rgba(0,0,0,0.2)] cursor-pointer"
+            className="absolute inset-0 bg-[#F5EEDC] border border-[#D1C2A5] shadow-[0_20px_40px_rgba(0,0,0,0.2)] cursor-pointer z-20"
             onMouseEnter={() => setHoveredLayer(2)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="absolute top-[80%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 translate-y-1/2 z-20">
+            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
+              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 2 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+                Acoustic Insulation
+              </span>
+            </div>
+            <div className="hidden md:block absolute top-[30%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 translate-y-1/2 z-20">
               <motion.div
                 style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top right" }}
                 className="absolute top-1/2 right-1/2 flex items-start justify-end pointer-events-auto"
               >
-                <svg width="60" height="60" className="absolute top-0 right-0 overflow-visible z-0 translate-x-[1px] -translate-y-[1px]">
-                  <path d="M 0 0 L -20 20 L -50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute top-0 right-0 overflow-visible z-0 translate-x-[1px] -translate-y-[1px]">
+                  <path d="M 0 0 L -10 10 L -25 10 md:M 0 0 L -20 20 L -50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
                 </svg>
 
-                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-12 translate-y-3">
-                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-2 md:-translate-x-12 translate-y-3">
+                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
                     Acoustic Insulation
                   </span>
                 </div>
@@ -563,23 +578,28 @@ function ExpertiseLayersSection() {
             style={{ translateZ: wiringZ }}
             animate={{ scale: hoveredLayer === 3 ? 1.05 : 1, filter: hoveredLayer === 3 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(96,165,250,0.6))' : 'brightness(1) drop-shadow(0 0 0px rgba(96,165,250,0))' }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute inset-0 border border-blue-300 bg-blue-50/40 shadow-[0_15px_30px_rgba(0,0,0,0.1)] drop-shadow-md cursor-pointer"
+            className="absolute inset-0 border border-blue-300 bg-blue-50/40 shadow-[0_15px_30px_rgba(0,0,0,0.1)] drop-shadow-md cursor-pointer z-30"
             onMouseEnter={() => setHoveredLayer(3)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
+            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
+              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 3 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-blue-600/60'}`}>
+                MEP / Wiring
+              </span>
+            </div>
             <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%)] bg-[size:30px_30px] pointer-events-none"></div>
 
-            <div className="absolute bottom-0 right-[15%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
+            <div className="hidden md:block absolute bottom-0 right-[15%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
               <motion.div
                 style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }}
                 className="absolute top-1/2 left-1/2 flex items-start pointer-events-auto"
               >
-                <svg width="60" height="60" className="absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
-                  <path d="M 0 0 L 20 20 L 50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
+                  <path d="M 0 0 L 10 10 L 25 10 md:M 0 0 L 20 20 L 50 20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
                 </svg>
 
-                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-12 translate-y-3">
-                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-2 md:translate-x-12 translate-y-3">
+                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
                     MEP / Wiring
                   </span>
                 </div>
@@ -592,23 +612,28 @@ function ExpertiseLayersSection() {
             style={{ translateZ: heatingZ }}
             animate={{ scale: hoveredLayer === 4 ? 1.05 : 1, filter: hoveredLayer === 4 ? 'brightness(1.1) drop-shadow(0 0 30px rgba(248,113,113,0.5))' : 'brightness(1) drop-shadow(0 0 0px rgba(248,113,113,0))' }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute inset-0 bg-red-50/50 border border-red-300 shadow-[0_15px_30px_rgba(0,0,0,0.15)] cursor-pointer"
+            className="absolute inset-0 bg-red-50/50 border border-red-300 shadow-[0_15px_30px_rgba(0,0,0,0.15)] cursor-pointer z-40"
             onMouseEnter={() => setHoveredLayer(4)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
+            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
+              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 4 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-red-500/60'}`}>
+                Radiant Heating
+              </span>
+            </div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(248,113,113,0.3)_0,transparent_10px)] bg-[size:25px_25px] pointer-events-none"></div>
 
-            <div className="absolute top-[20%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20">
+            <div className="hidden md:block absolute top-[20%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20">
               <motion.div
                 style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom right" }}
                 className="absolute bottom-1/2 right-1/2 flex items-end justify-end pointer-events-auto"
               >
-                <svg width="60" height="60" className="absolute bottom-0 right-0 overflow-visible z-0 translate-x-[1px] translate-y-[1px]">
-                  <path d="M 0 0 L -20 -20 L -50 -20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
+                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute bottom-0 right-0 overflow-visible z-0 translate-x-[1px] translate-y-[1px]">
+                  <path d="M 0 0 L -10 -10 L -25 -10 md:M 0 0 L -20 -20 L -50 -20" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
                 </svg>
 
-                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-12 -translate-y-6">
-                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-2 md:-translate-x-12 -translate-y-6">
+                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
                     Radiant Heating
                   </span>
                 </div>
@@ -621,8 +646,15 @@ function ExpertiseLayersSection() {
             style={{ translateZ: tileZ }}
             animate={{ scale: hoveredLayer === 5 ? 1.05 : 1, filter: hoveredLayer === 5 ? 'brightness(1.1) drop-shadow(0 0 40px rgba(197,160,89,0.7))' : 'brightness(1) drop-shadow(0 0 0px rgba(197,160,89,0))' }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute inset-0 bg-white border border-gray-100 shadow-[0_40px_60px_rgba(0,0,0,0.3)] cursor-pointer overflow-hidden"
+            className="absolute inset-0 bg-white border border-gray-100 shadow-[0_40px_60px_rgba(0,0,0,0.3)] cursor-pointer overflow-hidden z-50"
+            onMouseEnter={() => setHoveredLayer(5)}
+            onMouseLeave={() => setHoveredLayer(null)}
           >
+            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
+              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 5 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+                Marble Finishes
+              </span>
+            </div>
             {/* The Un-compressed Floor Image Hack */}
             <div
               className="absolute top-1/2 left-1/2 w-[150%] h-[150%] bg-[url('/extracted/brochure_img_68.jpg')] bg-cover bg-center pointer-events-none z-0"
@@ -630,7 +662,7 @@ function ExpertiseLayersSection() {
             />
 
             <div
-              className="absolute top-0 left-[50%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20"
+              className="hidden md:block absolute top-0 left-[50%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20"
               onMouseEnter={() => setHoveredLayer(5)}
               onMouseLeave={() => setHoveredLayer(null)}
             >
@@ -643,8 +675,8 @@ function ExpertiseLayersSection() {
                   <path d="M 0 0 L 0 -40" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
                 </svg>
 
-                <div className="bg-white px-8 py-3 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-1/2 -translate-y-[48px]">
-                  <span className="font-sans font-bold text-base md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-1/2 -translate-y-[24px] md:-translate-y-[48px]">
+                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
                     Premium Marble Finish
                   </span>
                 </div>
