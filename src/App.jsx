@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
 import Lenis from 'lenis';
 import mainImage from './assets/main image.jpeg';
 import logoImg from './assets/logo.png';
+import cardImg from './assets/card image.jpeg';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -56,7 +57,7 @@ function App() {
 
           <div
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className={`cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95`}
+            className={`cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center group`}
             aria-label="Premium Floors Home"
           >
             <div
@@ -69,8 +70,16 @@ function App() {
                 WebkitMaskSize: 'contain',
                 backgroundColor: '#C5A059'
               }}
-              className="h-16 md:h-24 w-40 md:w-56"
+              className="h-12 md:h-16 w-12 md:w-16"
             />
+            <motion.span 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="ml-3 font-heading text-sm md:text-lg text-gold tracking-[0.25em] uppercase font-bold"
+            >
+              Premium Floors
+            </motion.span>
           </div>
 
           <div className={`hidden md:flex space-x-8 text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? 'text-gold' : 'text-ivory'}`}>
@@ -233,7 +242,7 @@ function App() {
             <p className="text-sand/80 font-light max-w-2xl mx-auto text-lg mb-8">
               Our advanced resin solutions deliver hyper-durable, <strong className="text-gold font-normal">joint-free seamless surfaces</strong> designed to withstand the heaviest traffic.
             </p>
-            <span className="text-gold/90 uppercase tracking-widest text-sm font-bold border border-gold/30 px-6 py-3 rounded-full shadow-[0_0_15px_rgba(197,160,89,0.2)]">
+            <span className="inline-block text-gold/90 uppercase tracking-[0.2em] md:tracking-widest text-[10px] md:text-sm font-bold border border-gold/30 px-4 py-2.5 md:px-6 md:py-3 rounded-full shadow-[0_0_15px_rgba(197,160,89,0.2)] leading-relaxed">
               Backed by up to 15 Years Warranty
             </span>
           </div>
@@ -255,11 +264,11 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             <ProjectCard title="Luxury Villa Palm Jumeirah" category="Residential" img="/extracted/brochure_img_17.jpg" />
             <ProjectCard title="Five Star Hotel Downtown" category="Hospitality" img="/extracted/brochure_img_27.jpg" />
-            <ProjectCard title="Premium Commercial Hub" category="Commercial" img="/extracted/brochure_img_21.jpg" />
-            <ProjectCard title="Penthouse Marina" category="Renovation" img="/extracted/brochure_img_50.jpg" />
+            <ProjectCard title="Premium Commercial Hub" category="Commercial" img="/extracted/brochure_img_33.jpg" />
+            <ProjectCard title="Penthouse Marina" category="Renovation" img="/extracted/brochure_img_38.jpg" />
             
             <ProjectCard title="M E P Works" category="Infrastructure" img="/extracted/brochure_img_61.jpg" />
-            <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_1.jpg" />
+            <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_21.jpg" />
             <ProjectCard title="False Ceiling" category="Interior" img="/extracted/brochure_img_14.jpg" />
             <ProjectCard title="AC Electromechanical Works" category="Systems" img="/extracted/brochure_img_62.jpg" />
           </div>
@@ -305,7 +314,7 @@ function App() {
                 Their attention to detail and ability to deliver complex MEP and premium finishing works strictly on schedule is unmatched in Dubai. Exceptional craftsmanship.
               </p>
               <div className="border-t border-sand/30 pt-6 mt-6">
-                <h4 className="font-heading text-lg font-bold">Ahmed Al Maktoum</h4>
+                <h4 className="font-heading text-lg font-bold">Zayed Al Mansouri</h4>
                 <p className="text-sm text-gold uppercase tracking-widest mt-1">Property Developer</p>
               </div>
             </motion.div>
@@ -383,18 +392,29 @@ function App() {
 
       {/* Footer */}
       <footer className="py-12 bg-[#0a0a0a] border-t border-white/10 text-center text-sm text-sand/50 font-light flex flex-col items-center">
-        <div
-          style={{
-            maskImage: `url(${logoImg})`,
-            WebkitMaskImage: `url(${logoImg})`,
-            maskRepeat: 'no-repeat',
-            WebkitMaskRepeat: 'no-repeat',
-            maskSize: 'contain',
-            WebkitMaskSize: 'contain',
-            backgroundColor: '#C5A059'
-          }}
-          className="h-18 w-44 mb-6 opacity-90 transition-all hover:scale-110"
-        />
+        <div className="flex flex-col items-center mb-8 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div
+            style={{
+              maskImage: `url(${logoImg})`,
+              WebkitMaskImage: `url(${logoImg})`,
+              maskRepeat: 'no-repeat',
+              WebkitMaskRepeat: 'no-repeat',
+              maskSize: 'contain',
+              WebkitMaskSize: 'contain',
+              backgroundColor: '#C5A059'
+            }}
+            className="h-20 w-20 mb-4 opacity-90 transition-all group-hover:scale-110"
+          />
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="font-heading text-lg text-gold tracking-[0.3em] uppercase font-bold"
+          >
+            Premium Floors
+          </motion.span>
+        </div>
         <p>&copy; {new Date().getFullYear()} Premium Floors LLC. All rights reserved. Crafted for Excellence.</p>
       </footer>
     </div>
@@ -502,7 +522,7 @@ function ExpertiseLayersSection() {
         </div>
 
         <div
-          className="relative w-[85vw] h-[85vw] max-w-[320px] max-h-[320px] md:max-w-[450px] md:max-h-[450px] translate-y-12 md:translate-y-0"
+          className="relative w-[80vw] h-[80vw] max-w-[280px] max-h-[280px] md:max-w-[450px] md:max-h-[450px] translate-y-8 md:translate-y-0"
           style={{
             perspective: "1200px",
             transformStyle: "preserve-3d",
@@ -657,8 +677,8 @@ function ExpertiseLayersSection() {
             </div>
             {/* The Un-compressed Floor Image Hack */}
             <div
-              className="absolute top-1/2 left-1/2 w-[150%] h-[150%] bg-[url('/extracted/brochure_img_68.jpg')] bg-cover bg-center pointer-events-none z-0"
-              style={{ transform: "translate(-50%, -50%) rotateZ(45deg) scaleY(2)" }}
+              className={`absolute inset-0 bg-cover bg-center pointer-events-none z-0`}
+              style={{ backgroundImage: `url(${cardImg})` }}
             />
 
             <div
