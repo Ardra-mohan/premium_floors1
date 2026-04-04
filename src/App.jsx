@@ -249,7 +249,7 @@ function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img="/extracted/brochure_img_10.jpg" />
-            <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_42.jpg" />
+            <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
             <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_44.jpg" />
             <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_46.jpg" />
           </div>
@@ -268,7 +268,7 @@ function App() {
             <ProjectCard title="Penthouse Marina" category="Renovation" img="/extracted/brochure_img_38.jpg" />
             
             <ProjectCard title="M E P Works" category="Infrastructure" img="/extracted/brochure_img_61.jpg" />
-            <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_21.jpg" />
+            <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_54.jpg" />
             <ProjectCard title="False Ceiling" category="Interior" img="/extracted/brochure_img_14.jpg" />
             <ProjectCard title="AC Electromechanical Works" category="Systems" img="/extracted/brochure_img_62.jpg" />
           </div>
@@ -366,25 +366,25 @@ function App() {
                 <Phone className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Call Us</h3>
-              <p className="text-charcoal/70 font-light">+971 4 123 4567</p>
+              <p className="text-charcoal/70 font-light">056 7377056</p>
             </div>
             <div className="flex flex-col items-center group">
               <div className="w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
                 <Mail className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Email</h3>
-              <p className="text-charcoal/70 font-light">info@premiumfloors.ae</p>
+              <p className="text-charcoal/70 font-light">premiumfloorslcdubai.ae@gmail.com</p>
             </div>
             <div className="flex flex-col items-center group">
               <div className="w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
                 <MapPin className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Location</h3>
-              <p className="text-charcoal/70 font-light">Business Bay, Dubai, UAE</p>
+              <p className="text-charcoal/70 font-light">Deira Naif, Dubai, Ajman</p>
             </div>
           </div>
 
-          <a href="mailto:info@premiumfloors.ae" className="inline-flex items-center px-12 py-5 bg-matte-black text-white hover:bg-gold transition-colors duration-300 uppercase tracking-widest font-medium text-sm shadow-xl">
+          <a href="mailto:premiumfloorslcdubai.ae@gmail.com" className="inline-flex items-center px-12 py-5 bg-matte-black text-white hover:bg-gold transition-colors duration-300 uppercase tracking-widest font-medium text-sm shadow-xl">
             Inquire Now
           </a>
         </div>
@@ -539,7 +539,7 @@ function ExpertiseLayersSection() {
             onMouseLeave={() => setHoveredLayer(null)}
           >
             <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 1 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 1 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
                 Structural Concrete
               </span>
             </div>
@@ -553,7 +553,7 @@ function ExpertiseLayersSection() {
                 </svg>
 
                 <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-2 md:translate-x-12 translate-y-3">
-                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                  <span className="font-sans font-black text-[14px] md:text-2xl lg:text-3xl text-matte-black tracking-[2px] uppercase whitespace-nowrap">
                     Structural Concrete
                   </span>
                 </div>
@@ -571,7 +571,7 @@ function ExpertiseLayersSection() {
             onMouseLeave={() => setHoveredLayer(null)}
           >
             <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 2 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 2 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
                 Acoustic Insulation
               </span>
             </div>
@@ -585,7 +585,7 @@ function ExpertiseLayersSection() {
                 </svg>
 
                 <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-2 md:-translate-x-12 translate-y-3">
-                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                  <span className="font-sans font-black text-[14px] md:text-2xl lg:text-3xl text-matte-black tracking-[2px] uppercase whitespace-nowrap">
                     Acoustic Insulation
                   </span>
                 </div>
@@ -603,7 +603,7 @@ function ExpertiseLayersSection() {
             onMouseLeave={() => setHoveredLayer(null)}
           >
             <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 3 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-blue-600/60'}`}>
+              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 3 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-blue-600/60'}`}>
                 MEP / Wiring
               </span>
             </div>
@@ -619,7 +619,7 @@ function ExpertiseLayersSection() {
                 </svg>
 
                 <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-2 md:translate-x-12 translate-y-3">
-                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                  <span className="font-sans font-black text-[14px] md:text-2xl lg:text-3xl text-matte-black tracking-[2px] uppercase whitespace-nowrap">
                     MEP / Wiring
                   </span>
                 </div>
@@ -637,7 +637,7 @@ function ExpertiseLayersSection() {
             onMouseLeave={() => setHoveredLayer(null)}
           >
             <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 4 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-red-500/60'}`}>
+              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 4 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-red-500/60'}`}>
                 Radiant Heating
               </span>
             </div>
@@ -653,7 +653,7 @@ function ExpertiseLayersSection() {
                 </svg>
 
                 <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-2 md:-translate-x-12 -translate-y-6">
-                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                  <span className="font-sans font-black text-[14px] md:text-2xl lg:text-3xl text-matte-black tracking-[2px] uppercase whitespace-nowrap">
                     Radiant Heating
                   </span>
                 </div>
@@ -671,7 +671,7 @@ function ExpertiseLayersSection() {
             onMouseLeave={() => setHoveredLayer(null)}
           >
             <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[10px] font-bold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 5 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 5 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
                 Marble Finishes
               </span>
             </div>
@@ -696,7 +696,7 @@ function ExpertiseLayersSection() {
                 </svg>
 
                 <div className="bg-white px-2 py-1.5 md:px-8 md:py-3.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-1/2 -translate-y-[24px] md:-translate-y-[48px]">
-                  <span className="font-sans font-bold text-[10px] md:text-lg lg:text-xl text-matte-black tracking-[1px] uppercase whitespace-nowrap">
+                  <span className="font-sans font-black text-[14px] md:text-2xl lg:text-3xl text-matte-black tracking-[2px] uppercase whitespace-nowrap">
                     Premium Marble Finish
                   </span>
                 </div>
