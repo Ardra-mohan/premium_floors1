@@ -250,8 +250,8 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img="/extracted/brochure_img_10.jpg" />
             <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
-            <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_44.jpg" />
-            <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_46.jpg" />
+            <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_55.jpg" />
+            <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_84.jpg" />
           </div>
         </div>
       </section>
@@ -292,7 +292,7 @@ function App() {
               </div>
             </div>
             <div className="relative h-[600px]">
-              <img src="/extracted/brochure_img_84.jpg" alt="Craftsmanship" className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl" />
+              <img src="/extracted/brochure_img_46.jpg" alt="Craftsmanship" className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl" />
             </div>
           </div>
         </div>
@@ -373,7 +373,7 @@ function App() {
                 <Mail className="text-gold drop-shadow-sm" />
               </div>
               <h3 className="text-lg uppercase tracking-widest font-heading mb-2">Email</h3>
-              <p className="text-charcoal/70 font-light">premiumfloorslcdubai.ae@gmail.com</p>
+              <p className="text-charcoal/70 font-light">info@premiumfloorllc.com</p>
             </div>
             <div className="flex flex-col items-center group">
               <div className="w-16 h-16 border border-gold/40 rounded-full flex items-center justify-center mb-6 group-hover:bg-gold/10 transition-colors">
@@ -384,7 +384,7 @@ function App() {
             </div>
           </div>
 
-          <a href="mailto:premiumfloorslcdubai.ae@gmail.com" className="inline-flex items-center px-12 py-5 bg-matte-black text-white hover:bg-gold transition-colors duration-300 uppercase tracking-widest font-medium text-sm shadow-xl">
+          <a href="mailto:info@premiumfloorllc.com" className="inline-flex items-center px-12 py-5 bg-matte-black text-white hover:bg-gold transition-colors duration-300 uppercase tracking-widest font-medium text-sm shadow-xl">
             Inquire Now
           </a>
         </div>
