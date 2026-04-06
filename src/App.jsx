@@ -5,6 +5,13 @@ import Lenis from 'lenis';
 import mainImage from './assets/main image.jpeg';
 import logoImg from './assets/logo.png';
 import cardImg from './assets/card image.jpeg';
+import warehouseImg from './assets/warehouse.jpg';
+import fiveStarHotelImg from './assets/Five Star Hotel.jpg';
+import falseCeilingImg from './assets/false ceiling.jpg';
+import palmVillaImg from './assets/palm villa.jpg';
+import hubImg from './assets/hub.jpg';
+import penthouseImg from './assets/penthouse.jpg';
+import heroImg from './assets/hero image.jpg';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -141,7 +148,7 @@ function App() {
 
           {/* Base Floor Image (Zooms in) */}
           <motion.div
-            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainImage}")` }}
+            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${heroImg}")` }}
             className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           />
 
@@ -162,7 +169,7 @@ function App() {
             <h1 className="text-2xl md:text-5xl lg:text-6xl font-serif italic font-light mb-8 text-white drop-shadow-2xl leading-tight">
               Redefining <br className="hidden md:block"/> Modern Luxury
             </h1>
-            <p className="text-lg md:text-2xl text-white/90 font-sans font-light max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            <p className="text-xl md:text-3xl text-white/90 font-serif italic tracking-wide font-light max-w-4xl mx-auto leading-relaxed drop-shadow-lg">
               We combine cutting-edge materials with timeless design principles to create spaces that embody sophistication and contemporary elegance.
             </p>
           </motion.div>
@@ -248,7 +255,7 @@ function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img="/extracted/brochure_img_10.jpg" />
+            <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img={warehouseImg} />
             <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
             <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_55.jpg" />
             <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_84.jpg" />
@@ -262,14 +269,14 @@ function App() {
           <h2 className="text-4xl md:text-6xl font-heading mb-16 text-white border-b border-sand/20 pb-8">Featured Work</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-            <ProjectCard title="Luxury Villa Palm Jumeirah" category="Residential" img="/extracted/brochure_img_17.jpg" />
-            <ProjectCard title="Five Star Hotel Downtown" category="Hospitality" img="/extracted/brochure_img_27.jpg" />
-            <ProjectCard title="Premium Commercial Hub" category="Commercial" img="/extracted/brochure_img_33.jpg" />
-            <ProjectCard title="Penthouse Marina" category="Renovation" img="/extracted/brochure_img_38.jpg" />
+            <ProjectCard title="Luxury Villa Palm Jumeirah" category="Residential" img={palmVillaImg} />
+            <ProjectCard title="Five Star Hotel Downtown" category="Hospitality" img={fiveStarHotelImg} />
+            <ProjectCard title="Premium Commercial Hub" category="Commercial" img={hubImg} />
+            <ProjectCard title="Penthouse Marina" category="Renovation" img={penthouseImg} />
             
             <ProjectCard title="M E P Works" category="Infrastructure" img="/extracted/brochure_img_61.jpg" />
             <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_54.jpg" />
-            <ProjectCard title="False Ceiling" category="Interior" img="/extracted/brochure_img_14.jpg" />
+            <ProjectCard title="False Ceiling" category="Interior" img={falseCeilingImg} />
             <ProjectCard title="AC Electromechanical Works" category="Systems" img="/extracted/brochure_img_62.jpg" />
           </div>
         </div>
