@@ -23,9 +23,8 @@ function App() {
     offset: ["start start", "end start"]
   });
 
-  // Use vmax so the intro 'torch' isn't microscopic on narrow mobile screens
-  const torchSize = useTransform(scrollYProgress, [0, 0.4], [25, 200]);
-  const torchBg = useMotionTemplate`radial-gradient(circle at 50% 50%, transparent ${torchSize}vmax, rgba(10,10,10,0.95) calc(${torchSize}vmax + 15vmax))`;
+  const torchSize = useTransform(scrollYProgress, [0, 0.4], [15, 150]);
+  const torchBg = useMotionTemplate`radial-gradient(circle at 50% 50%, transparent ${torchSize}vw, rgba(10,10,10,0.98) calc(${torchSize}vw + 10vw))`;
 
   const bgScale = useTransform(scrollYProgress, [0.4, 1], [1, 2.5]);
 
@@ -145,7 +144,7 @@ function App() {
       {/* Hero Section */}
       {/* Torch Hero Section */}
       <section ref={heroRef} id="hero" className="relative h-[400vh] bg-matte-black">
-        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-matte-black">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-matte-black">
 
           {/* Base Floor Image (Zooms in) */}
           <motion.div
