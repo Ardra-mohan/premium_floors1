@@ -11,7 +11,6 @@ import falseCeilingImg from './assets/false ceiling.jpg';
 import palmVillaImg from './assets/palm villa.jpg';
 import hubImg from './assets/hub.jpg';
 import penthouseImg from './assets/penthouse.jpg';
-import heroImg from './assets/hero image.jpg';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -148,7 +147,7 @@ function App() {
 
           {/* Base Floor Image (Zooms in) */}
           <motion.div
-            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${heroImg}")` }}
+            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainImage}")` }}
             className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           />
 
