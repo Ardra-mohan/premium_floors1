@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
 import Lenis from 'lenis';
 import mainImage from './assets/main image.jpeg';
@@ -11,10 +11,35 @@ import falseCeilingImg from './assets/false ceiling.jpg';
 import palmVillaImg from './assets/palm villa.jpg';
 import hubImg from './assets/hub.jpg';
 import penthouseImg from './assets/penthouse.jpg';
+import mainPicImg from './assets/mainpic.jpg';
+
+const SERVICES_DATA = [
+  {
+    title: "Flooring & Tiling",
+    items: ["Marble, porcelain, ceramic, mosaic", "Natural stone installations", "Custom engraving & ornamental"]
+  },
+  {
+    title: "Interior Fit-Out",
+    items: ["False ceilings & partitions", "Luxury plastering & painting", "Custom woodwork & wallpaper"]
+  },
+  {
+    title: "MEP Solutions",
+    items: ["Electromechanical systems", "HVAC (AC & ventilation)", "Premium plumbing & sanitary"]
+  },
+  {
+    title: "Luxury Installations",
+    items: ["Swimming pools & deck flooring", "High-end decorative finishes", "Bespoke architectural elements"]
+  },
+  {
+    title: "Maintenance & Repairs",
+    items: ["Preventative maintenance", "Renovation works", "System upgrades"]
+  }
+];
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [isMarqueeHovered, setIsMarqueeHovered] = React.useState(false);
 
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -27,8 +52,8 @@ function App() {
 
   const bgScale = useTransform(scrollYProgress, [0.4, 1], [1, 2.5]);
 
-  const textOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.3], [0, -100]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.4, 0.8], [1, 1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
 
   React.useEffect(() => {
     const lenis = new Lenis({
@@ -147,7 +172,7 @@ function App() {
 
           {/* Base Floor Image (Zooms in) */}
           <motion.div
-            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainImage}")` }}
+            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainPicImg}")` }}
             className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           />
 
@@ -162,13 +187,13 @@ function App() {
             style={{ opacity: textOpacity, y: textY }}
             className="relative z-20 text-center px-8 py-12 md:px-16 md:py-16 max-w-4xl mx-auto mt-20 bg-black/30 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
           >
-            <span className="block text-gold uppercase tracking-[0.4em] text-sm md:text-base mb-6 font-heading animate-pulse">
+            <span className="block text-gold drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] uppercase tracking-[0.4em] text-sm md:text-lg mb-6 font-heading border border-gold/30 rounded-full px-6 py-2 inline-block bg-black/40 font-bold max-w-fit mx-auto relative shadow-xl">
               Bold. Refined. Iconic.
             </span>
-            <h1 className="text-2xl md:text-5xl lg:text-6xl font-serif italic font-light mb-8 text-white drop-shadow-2xl leading-tight">
+            <h1 className="text-2xl md:text-5xl lg:text-7xl font-serif italic font-light mb-8 text-white drop-shadow-[0_5px_20px_rgba(0,0,0,0.8)] leading-tight">
               Redefining <br className="hidden md:block"/> Modern Luxury
             </h1>
-            <p className="text-xl md:text-3xl text-white/90 font-serif italic tracking-wide font-light max-w-4xl mx-auto leading-relaxed drop-shadow-lg">
+            <p className="text-xl md:text-3xl text-white font-serif italic tracking-wide font-medium max-w-4xl mx-auto leading-relaxed drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">
               We combine cutting-edge materials with timeless design principles to create spaces that embody sophistication and contemporary elegance.
             </p>
           </motion.div>
@@ -202,40 +227,28 @@ function App() {
       <ExpertiseLayersSection />
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-sand/10 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between">
-            <div>
-              <h2 className="text-4xl md:text-6xl font-heading text-matte-black">Signature Services</h2>
-            </div>
-          </div>
+      <section id="services" className="py-24 bg-sand/10 overflow-hidden" style={{ perspective: "2500px" }}>
+        <div className="max-w-7xl mx-auto px-6 mb-16">
+          <h2 className="text-4xl md:text-6xl font-heading text-matte-black">Signature Services</h2>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ServiceCard
-              title="Flooring & Tiling"
-              items={["Marble, porcelain, ceramic, mosaic", "Natural stone installations", "Custom engraving & ornamental"]}
-              delay={0.1}
-            />
-            <ServiceCard
-              title="Interior Fit-Out"
-              items={["False ceilings & partitions", "Luxury plastering & painting", "Custom woodwork & wallpaper"]}
-              delay={0.2}
-            />
-            <ServiceCard
-              title="MEP Solutions"
-              items={["Electromechanical systems", "HVAC (AC & ventilation)", "Premium plumbing & sanitary"]}
-              delay={0.3}
-            />
-            <ServiceCard
-              title="Luxury Installations"
-              items={["Swimming pools & deck flooring", "High-end decorative finishes", "Bespoke architectural elements"]}
-              delay={0.4}
-            />
-            <ServiceCard
-              title="Maintenance & Repairs"
-              items={["Preventative maintenance", "Renovation works", "System upgrades"]}
-              delay={0.5}
-            />
+        <div 
+          className="relative w-full flex items-center py-12"
+          onMouseEnter={() => setIsMarqueeHovered(true)}
+          onMouseLeave={() => setIsMarqueeHovered(false)}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {/* Subtle gradient edges to fade out the marquee on the sides */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ivory to-transparent z-20 pointer-events-none"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ivory to-transparent z-20 pointer-events-none"></div>
+
+          <div 
+            className={`flex space-x-12 px-6 w-max animate-marquee ${isMarqueeHovered ? '[animation-play-state:paused]' : ''}`}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {[...SERVICES_DATA, ...SERVICES_DATA].map((srv, i) => (
+              <ServiceCard key={i} title={srv.title} items={srv.items} isMarqueeHovered={isMarqueeHovered} />
+            ))}
           </div>
         </div>
       </section>
@@ -427,24 +440,76 @@ function App() {
   );
 }
 
-function ServiceCard({ title, items, delay }) {
+function ServiceCard({ title, items, isMarqueeHovered }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const cardRef = React.useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ clientX, clientY }) {
+    if (!cardRef.current) return;
+    let { left, top } = cardRef.current.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  const isDimmed = isMarqueeHovered && !isHovered;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ type: "spring", stiffness: 100, damping: 20, delay }}
-      className="bg-white p-10 border border-sand/50 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group will-change-transform"
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      animate={{
+        scale: isHovered ? 1.15 : 1,
+        y: isHovered ? -15 : 0,
+        z: isHovered ? 30 : 0,
+        opacity: isDimmed ? 0.5 : 1,
+        filter: isDimmed ? "blur(3px)" : "blur(0px)",
+      }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="relative flex-none w-[320px] md:w-[360px] h-[280px] md:h-[320px] bg-white border cursor-pointer overflow-hidden transform-gpu flex flex-col group will-change-transform"
+      style={{
+        boxShadow: isHovered ? "0 40px 80px -15px rgba(197,160,89,0.3), 0 20px 40px -15px rgba(0,0,0,0.4)" : "0 10px 20px -5px rgba(0,0,0,0.05)",
+        borderColor: isHovered ? "rgba(197,160,89,0.6)" : "rgba(230,213,184,0.5)"
+      }}
     >
-      <h3 className="text-2xl font-heading text-matte-black mb-6 border-b border-sand/30 pb-4 group-hover:border-gold transition-colors">{title}</h3>
-      <ul className="space-y-4 text-charcoal/80 font-light">
-        {items.map((item, i) => (
-          <li key={i} className="flex items-start">
-            <span className="text-gold mr-3 mt-1 text-xs">◆</span>
-            {item}
-          </li>
-        ))}
-      </ul>
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"
+        style={{
+          background: useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(197,160,89,0.15), transparent 60%)`
+        }}
+      />
+      
+      <div className="p-6 md:p-8 relative z-10 flex flex-col h-full bg-white/40">
+        <h3 className="text-xl md:text-2xl font-heading text-matte-black mb-4 border-b border-sand/30 pb-3 relative transition-colors duration-500" style={{ borderColor: isHovered ? 'rgba(197,160,89,0.5)' : '' }}>{title}</h3>
+        
+        <div className="relative flex-grow overflow-hidden">
+          <ul className="space-y-3 md:space-y-4 text-charcoal/80 font-light mt-2 md:mt-4">
+            {items.map((item, i) => (
+              <motion.li 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
+                transition={{ duration: 0.4, delay: isHovered ? i * 0.1 : 0 }}
+                className="flex items-start text-sm md:text-base leading-relaxed"
+              >
+                <span className="text-gold mr-3 md:mr-4 mt-1 text-[10px] md:text-xs drop-shadow-sm">◆</span>
+                {item}
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+        
+        <motion.div 
+           className="mt-4 font-semibold text-gold text-xs md:text-sm tracking-[0.2em] uppercase absolute bottom-6 left-6 md:bottom-8 md:left-8 pointer-events-none"
+           animate={{ opacity: isHovered ? 0 : 1 }}
+           transition={{ duration: 0.4 }}
+        >
+           Explore Details →
+        </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -496,10 +561,10 @@ function ExpertiseLayersSection() {
   const zExpanded = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
 
   const tileZ = useTransform(zExpanded, v => `${v * 200}px`);
-  const heatingZ = useTransform(zExpanded, v => `${v * 100}px`);
-  const wiringZ = useTransform(zExpanded, v => `0px`);
-  const insulationZ = useTransform(zExpanded, v => `${v * -100}px`);
-  const concreteZ = useTransform(zExpanded, v => `${v * -200}px`);
+  const heatingZ = useTransform(zExpanded, v => `${v * 150}px`);
+  const wiringZ = useTransform(zExpanded, v => `${v * 100}px`);
+  const insulationZ = useTransform(zExpanded, v => `${v * 50}px`);
+  const concreteZ = useTransform(zExpanded, v => `0px`);
 
   const opacityLabels = useTransform(zExpanded, [0.3, 1], [0, 1]);
 
