@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
 import Lenis from 'lenis';
 import mainImage from './assets/main image.jpeg';
@@ -12,6 +12,13 @@ import palmVillaImg from './assets/palm villa.jpg';
 import hubImg from './assets/hub.jpg';
 import penthouseImg from './assets/penthouse.jpg';
 import mainPicImg from './assets/mainpic.jpg';
+import epoxy1Img from './assets/epoxy1.jpg';
+import epoxy2Img from './assets/epoxy2.jpg';
+import epoxy3Img from './assets/epoxy3.jpg';
+import epoxy4Img from './assets/epoxy4.jpg';
+import epoxy5Img from './assets/epoxy5.jpg';
+import epoxy6Img from './assets/epoxy6.png';
+import epoxy7Img from './assets/epoxy7.png';
 
 const SERVICES_DATA = [
   {
@@ -36,12 +43,19 @@ const SERVICES_DATA = [
   }
 ];
 
+const EPOXY_IMAGES = [epoxy1Img, epoxy2Img, epoxy3Img, epoxy7Img, epoxy4Img, epoxy6Img, epoxy5Img];
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMarqueeHovered, setIsMarqueeHovered] = React.useState(false);
+  const [isEpoxyHovered, setIsEpoxyHovered] = React.useState(false);
 
   const heroRef = useRef(null);
+  const servicesRef = useRef(null);
+  
+  const { scrollYProgress: servicesScrollY } = useScroll({ target: servicesRef, offset: ["start start", "end end"] });
+  const servicesX = useTransform(servicesScrollY, [0, 1], ["10vw", "-120vw"]);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
@@ -227,36 +241,38 @@ function App() {
       <ExpertiseLayersSection />
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-sand/10 overflow-hidden" style={{ perspective: "2500px" }}>
-        <div className="max-w-7xl mx-auto px-6 mb-16">
-          <h2 className="text-4xl md:text-6xl font-heading text-matte-black">Signature Services</h2>
-        </div>
-
-        <div 
-          className="relative w-full flex items-center py-12"
-          onMouseEnter={() => setIsMarqueeHovered(true)}
-          onMouseLeave={() => setIsMarqueeHovered(false)}
-          style={{ transformStyle: "preserve-3d" }}
-        >
-          {/* Subtle gradient edges to fade out the marquee on the sides */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ivory to-transparent z-20 pointer-events-none"></div>
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ivory to-transparent z-20 pointer-events-none"></div>
+      <section id="services" ref={servicesRef} className="relative h-[250vh]">
+        <div className="sticky top-0 h-screen bg-sand/10 overflow-hidden flex flex-col justify-center" style={{ perspective: "2500px" }}>
+          <div className="max-w-7xl mx-auto px-6 mb-8 md:mb-16 w-full">
+            <h2 className="text-4xl md:text-6xl font-heading text-matte-black">Signature Services</h2>
+          </div>
 
           <div 
-            className={`flex space-x-12 px-6 w-max animate-marquee ${isMarqueeHovered ? '[animation-play-state:paused]' : ''}`}
+            className="relative w-full flex items-center py-12"
+            onMouseEnter={() => setIsMarqueeHovered(true)}
+            onMouseLeave={() => setIsMarqueeHovered(false)}
             style={{ transformStyle: "preserve-3d" }}
           >
-            {[...SERVICES_DATA, ...SERVICES_DATA].map((srv, i) => (
-              <ServiceCard key={i} title={srv.title} items={srv.items} isMarqueeHovered={isMarqueeHovered} />
-            ))}
+            {/* Subtle gradient edges to fade out the marquee on the sides */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ivory to-transparent z-20 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ivory to-transparent z-20 pointer-events-none"></div>
+
+            <motion.div 
+              className="flex space-x-12 px-6 md:px-24 w-max"
+              style={{ x: servicesX, transformStyle: "preserve-3d" }}
+            >
+              {SERVICES_DATA.map((srv, i) => (
+                <ServiceCard key={i} title={srv.title} items={srv.items} isMarqueeHovered={isMarqueeHovered} />
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Epoxy Specialties Section */}
-      <section id="epoxy" className="py-24 bg-matte-black text-ivory border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
+      <section id="epoxy" className="py-24 bg-matte-black text-ivory border-b border-white/10 overflow-hidden" style={{ perspective: "2500px" }}>
+        <div className="max-w-7xl mx-auto px-6 mb-8 md:mb-16">
+          <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-heading mb-6 text-white tracking-widest uppercase">Industrial & Commercial Epoxy</h2>
             <p className="text-sand/80 font-light max-w-2xl mx-auto text-lg mb-8">
               Our advanced resin solutions deliver hyper-durable, <strong className="text-gold font-normal">joint-free seamless surfaces</strong> designed to withstand the heaviest traffic.
@@ -265,12 +281,25 @@ function App() {
               Backed by up to 15 Years Warranty
             </span>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img={warehouseImg} />
-            <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
-            <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_55.jpg" />
-            <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_84.jpg" />
+        <div 
+          className="relative w-full flex items-center py-12"
+          onMouseEnter={() => setIsEpoxyHovered(true)}
+          onMouseLeave={() => setIsEpoxyHovered(false)}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {/* Subtle gradient edges to fade out the marquee on the sides, dark style */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-matte-black to-transparent z-20 pointer-events-none"></div>
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-matte-black to-transparent z-20 pointer-events-none"></div>
+
+          <div 
+            className={`flex space-x-8 md:space-x-12 px-6 w-max animate-marquee ${isEpoxyHovered ? '[animation-play-state:paused]' : ''}`}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {[...EPOXY_IMAGES, ...EPOXY_IMAGES].map((imgSrc, i) => (
+              <EpoxyCard key={i} img={imgSrc} isMarqueeHovered={isEpoxyHovered} />
+            ))}
           </div>
         </div>
       </section>
@@ -280,7 +309,12 @@ function App() {
         <div className="px-6 max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-heading mb-16 text-white border-b border-sand/20 pb-8">Featured Work</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img={warehouseImg} />
+            <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
+            <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_55.jpg" />
+            <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_84.jpg" />
+            
             <ProjectCard title="Luxury Villa Palm Jumeirah" category="Residential" img={palmVillaImg} />
             <ProjectCard title="Five Star Hotel Downtown" category="Hospitality" img={fiveStarHotelImg} />
             <ProjectCard title="Premium Commercial Hub" category="Commercial" img={hubImg} />
@@ -514,6 +548,82 @@ function ServiceCard({ title, items, isMarqueeHovered }) {
   );
 }
 
+function EpoxyCard({ img, isMarqueeHovered }) {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const cardRef = React.useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(0, { stiffness: 60, damping: 20 });
+  const rotateY = useSpring(0, { stiffness: 60, damping: 20 });
+
+  function handleMouseMove({ clientX, clientY }) {
+    if (!cardRef.current) return;
+    let { left, top, width, height } = cardRef.current.getBoundingClientRect();
+    let x = clientX - left;
+    let y = clientY - top;
+    mouseX.set(x);
+    mouseY.set(y);
+    
+    // Tilt calculations (-15 to +15 deg)
+    const rX = ((y / height) - 0.5) * -30;
+    const rY = ((x / width) - 0.5) * 30;
+    rotateX.set(rX);
+    rotateY.set(rY);
+  }
+
+  function handleMouseLeave() {
+    setIsHovered(false);
+    rotateX.set(0);
+    rotateY.set(0);
+  }
+
+  const isDimmed = isMarqueeHovered && !isHovered;
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+      animate={{
+        scale: isHovered ? 1.12 : 1,
+        y: isHovered ? -20 : 0,
+        z: isHovered ? 40 : 0,
+        opacity: isDimmed ? 0.4 : 1,
+        filter: isDimmed ? "blur(3px)" : "blur(0px)",
+      }}
+      style={{
+        rotateX: isHovered ? rotateX : 0,
+        rotateY: isHovered ? rotateY : 0,
+        boxShadow: isHovered ? "0 40px 80px -15px rgba(197,160,89,0.2), 0 20px 40px -15px rgba(0,0,0,0.8)" : "0 10px 20px -5px rgba(0,0,0,0.4)",
+      }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      className="relative flex-none w-[200px] md:w-[260px] h-[260px] md:h-[340px] bg-white/5 backdrop-blur-xl border rounded-[4px] cursor-pointer overflow-hidden transform-gpu group will-change-transform"
+    >
+      <img src={img} alt="Epoxy Finish" className="absolute inset-0 w-full h-full object-cover opacity-80 grayscale-[20%] group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000" />
+      
+      {/* Glass Overlay for frosting effect */}
+      <div className="absolute inset-0 bg-matte-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
+
+      {/* Light Reflection */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-20 mix-blend-overlay"
+        style={{
+          background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.15), transparent 50%)`
+        }}
+      />
+      
+      {/* Golden Spot Light */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 mix-blend-color-dodge w-full h-full"
+        style={{
+          background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(197,160,89,0.15), transparent 60%)`
+        }}
+      />
+    </motion.div>
+  );
+}
+
 function ProjectCard({ title, category, img }) {
   return (
     <motion.div
@@ -523,7 +633,11 @@ function ProjectCard({ title, category, img }) {
       transition={{ duration: 0.8 }}
       className="group relative overflow-hidden h-[250px] md:h-[500px] cursor-pointer"
     >
-      <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+      {img ? (
+        <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+      ) : (
+        <div className="w-full h-full bg-ivory/10 transition-transform duration-1000 group-hover:scale-110 border border-white/5" />
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-matte-black/90 via-matte-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
       <div className="absolute bottom-0 left-0 p-6 md:p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
         <p className="text-gold uppercase tracking-widest text-[10px] md:text-xs mb-2 font-medium">{category}</p>
