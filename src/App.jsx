@@ -50,12 +50,26 @@ function App() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMarqueeHovered, setIsMarqueeHovered] = React.useState(false);
   const [isEpoxyHovered, setIsEpoxyHovered] = React.useState(false);
+  const [windowWidth, setWindowWidth] = React.useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const getScrollEnd = () => {
+    if (windowWidth < 768) return "-450vw";
+    if (windowWidth < 1024) return "-250vw";
+    return "-120vw";
+  };
 
   const heroRef = useRef(null);
   const servicesRef = useRef(null);
   
   const { scrollYProgress: servicesScrollY } = useScroll({ target: servicesRef, offset: ["start start", "end end"] });
-  const servicesX = useTransform(servicesScrollY, [0, 1], ["10vw", "-120vw"]);
+  const servicesX = useTransform(servicesScrollY, [0, 1], ["10vw", getScrollEnd()]);
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"]
@@ -600,10 +614,10 @@ function EpoxyCard({ img, isMarqueeHovered }) {
       transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
       className="relative flex-none w-[200px] md:w-[260px] h-[260px] md:h-[340px] bg-white/5 backdrop-blur-xl border rounded-[4px] cursor-pointer overflow-hidden transform-gpu group will-change-transform"
     >
-      <img src={img} alt="Epoxy Finish" className="absolute inset-0 w-full h-full object-cover opacity-80 grayscale-[20%] group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000" />
+      <img src={img} alt="Epoxy Finish" className="absolute inset-0 w-full h-full object-cover opacity-100 md:opacity-80 grayscale-0 md:grayscale-[20%] group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000" />
       
       {/* Glass Overlay for frosting effect */}
-      <div className="absolute inset-0 bg-matte-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
+      <div className="absolute inset-0 bg-transparent md:bg-matte-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
 
       {/* Light Reflection */}
       <motion.div
