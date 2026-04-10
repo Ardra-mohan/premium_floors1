@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
-import { Phone, Mail, MapPin, ChevronRight, Menu, X } from 'lucide-react';
+import { Phone, Mail, MapPin, ChevronRight, Menu, X, Instagram } from 'lucide-react';
 import Lenis from 'lenis';
 import mainImage from './assets/main image.jpeg';
 import logoImg from './assets/logo.png';
@@ -482,7 +482,16 @@ function App() {
             Premium Floors
           </motion.span>
         </div>
-        <p>&copy; {new Date().getFullYear()} Premium Floors LLC. All rights reserved. Crafted for Excellence.</p>
+        <p className="mb-4">&copy; {new Date().getFullYear()} Premium Floors LLC. All rights reserved. Crafted for Excellence.</p>
+        <a 
+          href="https://www.instagram.com/intellex.web?igsh=MWZyenU0bWc3M2RxOQ==" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-gold/60 hover:text-gold transition-colors duration-300"
+        >
+          <Instagram size={14} />
+          <span className="text-[11px] uppercase tracking-[0.2em] font-medium">Meet the developers</span>
+        </a>
       </footer>
     </div>
   );
