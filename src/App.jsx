@@ -66,7 +66,7 @@ function App() {
 
   const heroRef = useRef(null);
   const servicesRef = useRef(null);
-  
+
   const { scrollYProgress: servicesScrollY } = useScroll({ target: servicesRef, offset: ["start start", "end end"] });
   const servicesX = useTransform(servicesScrollY, [0, 1], ["10vw", getScrollEnd()]);
 
@@ -111,7 +111,7 @@ function App() {
     <div className="min-h-screen bg-ivory flex flex-col">
       <CursorSparkles />
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'glass bg-matte-black/95 border-b border-white/10 shadow-sm py-2' : 'bg-transparent py-4'}`}>
+      <nav className={`fixed w-full z-[1000] transition-all duration-300 ${isScrolled ? 'bg-matte-black border-b border-white/10 shadow-lg py-2' : 'bg-transparent py-4'}`}>
         <div className="w-full mx-auto px-6 md:px-12 lg:px-20 flex justify-between items-center relative h-12">
 
           <div
@@ -131,7 +131,7 @@ function App() {
               }}
               className="h-12 md:h-16 w-12 md:w-16"
             />
-            <motion.span 
+            <motion.span
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
@@ -163,7 +163,7 @@ function App() {
           initial={false}
           animate={isMenuOpen ? { x: 0, opacity: 1 } : { x: '100%', opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed inset-0 bg-matte-black/95 backdrop-blur-xl z-[60] flex flex-col items-center justify-center space-y-8 md:hidden"
+          className="fixed inset-0 bg-matte-black z-[1001] flex flex-col items-center justify-center space-y-8 md:hidden"
         >
           <div
             style={{
@@ -213,13 +213,13 @@ function App() {
           {/* Initial Hero Text */}
           <motion.div
             style={{ opacity: textOpacity, y: textY }}
-            className="relative z-20 text-center px-8 py-12 md:px-16 md:py-16 max-w-4xl mx-auto mt-20 bg-black/30 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            className="relative z-20 text-center px-8 py-12 md:px-16 md:py-16 max-w-4xl mx-auto mt-28 md:mt-32 bg-black/30 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]"
           >
             <span className="block text-gold drop-shadow-[0_2px_15px_rgba(0,0,0,0.9)] uppercase tracking-[0.4em] text-sm md:text-lg mb-6 font-heading border border-gold/30 rounded-full px-6 py-2 inline-block bg-black/40 font-bold max-w-fit mx-auto relative shadow-xl">
               Bold. Refined. Iconic.
             </span>
             <h1 className="text-2xl md:text-5xl lg:text-7xl font-serif italic font-light mb-8 text-white drop-shadow-[0_5px_20px_rgba(0,0,0,0.8)] leading-tight">
-              Redefining <br className="hidden md:block"/> Modern Luxury
+              Redefining <br className="hidden md:block" /> Modern Luxury
             </h1>
             <p className="text-xl md:text-3xl text-white font-serif italic tracking-wide font-medium max-w-4xl mx-auto leading-relaxed drop-shadow-[0_4px_15px_rgba(0,0,0,0.8)]">
               We combine cutting-edge materials with timeless design principles to create spaces that embody sophistication and contemporary elegance.
@@ -261,7 +261,7 @@ function App() {
             <h2 className="text-4xl md:text-6xl font-heading text-matte-black">Signature Services</h2>
           </div>
 
-          <div 
+          <div
             className="relative w-full flex items-center py-12"
             onMouseEnter={() => setIsMarqueeHovered(true)}
             onMouseLeave={() => setIsMarqueeHovered(false)}
@@ -271,7 +271,7 @@ function App() {
             <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ivory to-transparent z-20 pointer-events-none"></div>
             <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ivory to-transparent z-20 pointer-events-none"></div>
 
-            <motion.div 
+            <motion.div
               className="flex space-x-12 px-6 md:px-24 w-max"
               style={{ x: servicesX, transformStyle: "preserve-3d" }}
             >
@@ -297,7 +297,7 @@ function App() {
           </div>
         </div>
 
-        <div 
+        <div
           className="relative w-full flex items-center py-12"
           onMouseEnter={() => setIsEpoxyHovered(true)}
           onMouseLeave={() => setIsEpoxyHovered(false)}
@@ -307,7 +307,7 @@ function App() {
           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-matte-black to-transparent z-20 pointer-events-none"></div>
           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-matte-black to-transparent z-20 pointer-events-none"></div>
 
-          <div 
+          <div
             className={`flex space-x-8 md:space-x-12 px-6 w-max animate-marquee ${isEpoxyHovered ? '[animation-play-state:paused]' : ''}`}
             style={{ transformStyle: "preserve-3d" }}
           >
@@ -328,12 +328,12 @@ function App() {
             <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
             <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_55.jpg" />
             <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_84.jpg" />
-            
+
             <ProjectCard title="Luxury Villa Palm Jumeirah" category="Residential" img={palmVillaImg} />
             <ProjectCard title="Five Star Hotel Downtown" category="Hospitality" img={fiveStarHotelImg} />
             <ProjectCard title="Premium Commercial Hub" category="Commercial" img={hubImg} />
             <ProjectCard title="Penthouse Marina" category="Renovation" img={penthouseImg} />
-            
+
             <ProjectCard title="M E P Works" category="Infrastructure" img="/extracted/brochure_img_61.jpg" />
             <ProjectCard title="Construction Related Works" category="Structural" img="/extracted/brochure_img_54.jpg" />
             <ProjectCard title="False Ceiling" category="Interior" img={falseCeilingImg} />
@@ -472,7 +472,7 @@ function App() {
             }}
             className="h-20 w-20 mb-4 opacity-90 transition-all group-hover:scale-110"
           />
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -483,9 +483,9 @@ function App() {
           </motion.span>
         </div>
         <p className="mb-4">&copy; {new Date().getFullYear()} Premium Floors LLC. All rights reserved. Crafted for Excellence.</p>
-        <a 
-          href="https://www.instagram.com/intellex.web?igsh=MWZyenU0bWc3M2RxOQ==" 
-          target="_blank" 
+        <a
+          href="https://www.instagram.com/intellex.web?igsh=MWZyenU0bWc3M2RxOQ=="
+          target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-gold/60 hover:text-gold transition-colors duration-300"
         >
@@ -538,15 +538,15 @@ function ServiceCard({ title, items, isMarqueeHovered }) {
           background: useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(197,160,89,0.15), transparent 60%)`
         }}
       />
-      
+
       <div className="p-6 md:p-8 relative z-10 flex flex-col h-full bg-white/40">
         <h3 className="text-xl md:text-2xl font-heading text-matte-black mb-4 border-b border-sand/30 pb-3 relative transition-colors duration-500" style={{ borderColor: isHovered ? 'rgba(197,160,89,0.5)' : '' }}>{title}</h3>
-        
+
         <div className="relative flex-grow overflow-hidden">
           <ul className="space-y-3 md:space-y-4 text-charcoal/80 font-light mt-2 md:mt-4">
             {items.map((item, i) => (
-              <motion.li 
-                key={i} 
+              <motion.li
+                key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
                 transition={{ duration: 0.4, delay: isHovered ? i * 0.1 : 0 }}
@@ -558,13 +558,13 @@ function ServiceCard({ title, items, isMarqueeHovered }) {
             ))}
           </ul>
         </div>
-        
-        <motion.div 
-           className="mt-4 font-semibold text-gold text-xs md:text-sm tracking-[0.2em] uppercase absolute bottom-6 left-6 md:bottom-8 md:left-8 pointer-events-none"
-           animate={{ opacity: isHovered ? 0 : 1 }}
-           transition={{ duration: 0.4 }}
+
+        <motion.div
+          className="mt-4 font-semibold text-gold text-xs md:text-sm tracking-[0.2em] uppercase absolute bottom-6 left-6 md:bottom-8 md:left-8 pointer-events-none"
+          animate={{ opacity: isHovered ? 0 : 1 }}
+          transition={{ duration: 0.4 }}
         >
-           Explore Details →
+          Explore Details →
         </motion.div>
       </div>
     </motion.div>
@@ -586,7 +586,7 @@ function EpoxyCard({ img, isMarqueeHovered }) {
     let y = clientY - top;
     mouseX.set(x);
     mouseY.set(y);
-    
+
     // Tilt calculations (-15 to +15 deg)
     const rX = ((y / height) - 0.5) * -30;
     const rY = ((x / width) - 0.5) * 30;
@@ -624,7 +624,7 @@ function EpoxyCard({ img, isMarqueeHovered }) {
       className="relative flex-none w-[200px] md:w-[260px] h-[260px] md:h-[340px] bg-white/5 backdrop-blur-xl border rounded-[4px] cursor-pointer overflow-hidden transform-gpu group will-change-transform"
     >
       <img src={img} alt="Epoxy Finish" className="absolute inset-0 w-full h-full object-cover opacity-100 md:opacity-80 grayscale-0 md:grayscale-[20%] group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000" />
-      
+
       {/* Glass Overlay for frosting effect */}
       <div className="absolute inset-0 bg-transparent md:bg-matte-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
 
@@ -635,7 +635,7 @@ function EpoxyCard({ img, isMarqueeHovered }) {
           background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.15), transparent 50%)`
         }}
       />
-      
+
       {/* Golden Spot Light */}
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 mix-blend-color-dodge w-full h-full"
