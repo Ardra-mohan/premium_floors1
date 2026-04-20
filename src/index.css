@@ -7,14 +7,21 @@
   --color-charcoal: #222222;
   --color-gold: #C5A059;
 
-  --font-heading: 'GFS Didot', serif;
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-sans: 'Open Sans', sans-serif;
+  --font-heading: 'Raleway', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-body: 'Lato', sans-serif;
 }
 
 @layer base {
   body {
     @apply bg-ivory text-charcoal font-sans antialiased overflow-x-hidden;
+  }
+
+  p,
+  li,
+  .desc {
+    font-family: var(--font-body);
   }
 
   h1,

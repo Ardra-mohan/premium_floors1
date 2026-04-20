@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X, Instagram } from 'lucide-react';
 import Lenis from 'lenis';
-import mainImage from './assets/main image.jpeg';
+
 import logoImg from './assets/logo.png';
 import cardImg from './assets/card image.jpeg';
 import warehouseImg from './assets/warehouse.jpg';
@@ -11,7 +11,7 @@ import falseCeilingImg from './assets/false ceiling.jpg';
 import palmVillaImg from './assets/palm villa.jpg';
 import hubImg from './assets/hub.jpg';
 import penthouseImg from './assets/penthouse.jpg';
-import mainPicImg from './assets/mainpic.jpg';
+import mainHeroImg from './assets/main.png';
 import epoxy1Img from './assets/epoxy1.jpg';
 import epoxy2Img from './assets/epoxy2.jpg';
 import epoxy3Img from './assets/epoxy3.jpg';
@@ -200,7 +200,7 @@ function App() {
 
           {/* Base Floor Image (Zooms in) */}
           <motion.div
-            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainPicImg}")` }}
+            style={{ scale: bgScale, transformOrigin: "50% 50%", backgroundImage: `url("${mainHeroImg}")` }}
             className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           />
 
