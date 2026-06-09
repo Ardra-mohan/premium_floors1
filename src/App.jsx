@@ -65,10 +65,6 @@ function App() {
   };
 
   const heroRef = useRef(null);
-  const servicesRef = useRef(null);
-
-  const { scrollYProgress: servicesScrollY } = useScroll({ target: servicesRef, offset: ["start start", "end end"] });
-  const servicesX = useTransform(servicesScrollY, [0, 1], ["10vw", getScrollEnd()]);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -255,33 +251,7 @@ function App() {
       <ExpertiseLayersSection />
 
       {/* Services Section */}
-      <section id="services" ref={servicesRef} className="relative h-[700vh]">
-        <div className="sticky top-0 h-screen bg-sand/10 overflow-hidden flex flex-col justify-center" style={{ perspective: "2500px" }}>
-          <div className="max-w-7xl mx-auto px-6 mb-8 md:mb-16 w-full">
-            <h2 className="text-4xl md:text-6xl font-heading text-matte-black">Signature Services</h2>
-          </div>
-
-          <div
-            className="relative w-full flex items-center py-12"
-            onMouseEnter={() => setIsMarqueeHovered(true)}
-            onMouseLeave={() => setIsMarqueeHovered(false)}
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {/* Subtle gradient edges to fade out the marquee on the sides */}
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ivory to-transparent z-20 pointer-events-none"></div>
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ivory to-transparent z-20 pointer-events-none"></div>
-
-            <motion.div
-              className="flex space-x-12 px-6 md:px-24 w-max"
-              style={{ x: servicesX, transformStyle: "preserve-3d" }}
-            >
-              {SERVICES_DATA.map((srv, i) => (
-                <ServiceCard key={i} title={srv.title} items={srv.items} isMarqueeHovered={isMarqueeHovered} />
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <ServicesSection />
 
       {/* Epoxy Specialties Section */}
       <section id="epoxy" className="py-24 bg-matte-black text-ivory border-b border-white/10 overflow-hidden" style={{ perspective: "2500px" }}>
@@ -497,77 +467,130 @@ function App() {
   );
 }
 
-function ServiceCard({ title, items, isMarqueeHovered }) {
-  const [isHovered, setIsHovered] = React.useState(false);
-  const cardRef = React.useRef(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+function ServicesSection() {
+  const [cardsOrder, setCardsOrder] = React.useState([0, 1, 2, 3, 4]);
+  const [isFlying, setIsFlying] = React.useState(false);
+  const [direction, setDirection] = React.useState(1); // 1 for right, -1 for left
 
-  function handleMouseMove({ clientX, clientY }) {
-    if (!cardRef.current) return;
-    let { left, top } = cardRef.current.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
+  const handleCardClick = (indexInStack) => {
+    // Only allow clicking the top card
+    if (indexInStack !== 0 || isFlying) return;
 
-  const isDimmed = isMarqueeHovered && !isHovered;
+    setIsFlying(true);
+    // Randomize fly out direction for organic feel
+    setDirection(Math.random() > 0.5 ? 1 : -1);
+
+    setTimeout(() => {
+      setCardsOrder(prev => {
+        const next = [...prev];
+        const top = next.shift();
+        next.push(top);
+        return next;
+      });
+      setIsFlying(false);
+    }, 350); // Match animation duration
+  };
 
   return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      animate={{
-        scale: isHovered ? 1.15 : 1,
-        y: isHovered ? -15 : 0,
-        z: isHovered ? 30 : 0,
-        opacity: isDimmed ? 0.5 : 1,
-        filter: isDimmed ? "blur(3px)" : "blur(0px)",
-      }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="relative flex-none w-[320px] md:w-[360px] h-[280px] md:h-[320px] bg-white border cursor-pointer overflow-hidden transform-gpu flex flex-col group will-change-transform"
-      style={{
-        boxShadow: isHovered ? "0 40px 80px -15px rgba(197,160,89,0.3), 0 20px 40px -15px rgba(0,0,0,0.4)" : "0 10px 20px -5px rgba(0,0,0,0.05)",
-        borderColor: isHovered ? "rgba(197,160,89,0.6)" : "rgba(230,213,184,0.5)"
-      }}
-    >
-      <motion.div
-        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"
-        style={{
-          background: useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(197,160,89,0.15), transparent 60%)`
-        }}
-      />
-
-      <div className="p-6 md:p-8 relative z-10 flex flex-col h-full bg-white/40">
-        <h3 className="text-xl md:text-2xl font-heading text-matte-black mb-4 border-b border-sand/30 pb-3 relative transition-colors duration-500" style={{ borderColor: isHovered ? 'rgba(197,160,89,0.5)' : '' }}>{title}</h3>
-
-        <div className="relative flex-grow overflow-hidden">
-          <ul className="space-y-3 md:space-y-4 text-charcoal/80 font-light mt-2 md:mt-4">
-            {items.map((item, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }}
-                transition={{ duration: 0.4, delay: isHovered ? i * 0.1 : 0 }}
-                className="flex items-start text-sm md:text-base leading-relaxed"
-              >
-                <span className="text-gold mr-3 md:mr-4 mt-1 text-[10px] md:text-xs drop-shadow-sm">◆</span>
-                {item}
-              </motion.li>
-            ))}
-          </ul>
-        </div>
-
-        <motion.div
-          className="mt-4 font-semibold text-gold text-xs md:text-sm tracking-[0.2em] uppercase absolute bottom-6 left-6 md:bottom-8 md:left-8 pointer-events-none"
-          animate={{ opacity: isHovered ? 0 : 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          Explore Details →
-        </motion.div>
+    <section id="services" className="relative min-h-screen bg-sand/10 py-20 flex flex-col justify-center items-center overflow-hidden border-b border-sand/30">
+      <div className="max-w-7xl mx-auto px-6 mb-12 md:mb-16 text-center w-full z-10">
+        <span className="block text-gold uppercase tracking-[0.25em] text-xs md:text-sm mb-3 font-semibold">
+          Our Specializations
+        </span>
+        <h2 className="text-4xl md:text-6xl font-heading text-matte-black">
+          Signature Services
+        </h2>
+        <p className="text-charcoal/70 font-light max-w-xl mx-auto mt-4 text-sm md:text-base">
+          Click the card to cycle through our turnkey capabilities and technical expertise.
+        </p>
       </div>
-    </motion.div>
+
+      {/* 3D Stack Container */}
+      <div 
+        className="relative w-[300px] md:w-[480px] h-[380px] md:h-[430px] mt-8 flex items-center justify-center select-none"
+        style={{
+          perspective: "1200px",
+          transformStyle: "preserve-3d"
+        }}
+      >
+        {cardsOrder.map((serviceIndex, i) => {
+          const service = SERVICES_DATA[serviceIndex];
+          const isTop = i === 0;
+          
+          // 3D parameters based on stack depth (i)
+          const scale = isTop && isFlying ? 0.95 : 1 - i * 0.05;
+          const yOffset = -i * 18; // offset upwards to stack them
+          const zOffset = -i * 50; // offset in Z space
+          const opacity = 1 - i * 0.18;
+          const zIndex = 10 - i;
+
+          // Flyout animations for the top card
+          const animateX = isTop && isFlying ? direction * 380 : 0;
+          const animateRotate = isTop && isFlying ? direction * 25 : 0;
+          const animateOpacity = isTop && isFlying ? 0 : opacity;
+
+          return (
+            <motion.div
+              key={serviceIndex}
+              onClick={() => handleCardClick(i)}
+              animate={{
+                x: animateX,
+                y: yOffset,
+                z: zOffset,
+                scale: scale,
+                rotate: animateRotate,
+                opacity: animateOpacity,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 220,
+                damping: 24,
+              }}
+              className={`absolute inset-0 w-full h-full bg-white/95 border border-sand/30 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-lg p-6 md:p-10 flex flex-col justify-between cursor-pointer group select-none ${isTop ? 'pointer-events-auto' : 'pointer-events-none'}`}
+              style={{
+                zIndex: zIndex,
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden"
+              }}
+            >
+              {/* Card content */}
+              <div>
+                <div className="flex justify-between items-start mb-6">
+                  <span className="text-gold font-serif italic text-lg md:text-xl font-light">
+                    0{serviceIndex + 1}
+                  </span>
+                  {isTop && (
+                    <span className="text-[10px] md:text-xs text-gold uppercase tracking-widest font-semibold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 shadow-sm animate-pulse">
+                      Active
+                    </span>
+                  )}
+                </div>
+                
+                <h3 className="text-2xl md:text-3xl font-serif italic text-matte-black mb-6 border-b border-sand/20 pb-4">
+                  {service.title}
+                </h3>
+                
+                <ul className="space-y-3 md:space-y-4">
+                  {service.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start text-sm md:text-base text-charcoal/80 font-light leading-relaxed">
+                      <span className="text-gold mr-3 mt-1.5 text-[8px] md:text-[10px]">◆</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {isTop && (
+                <div className="mt-6 border-t border-sand/10 pt-4 flex justify-between items-center text-[10px] md:text-xs text-gold uppercase tracking-[0.15em] font-semibold group-hover:text-gold/80 transition-colors">
+                  <span>Click Card to Cycle</span>
+                  <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -695,26 +718,43 @@ function ExpertiseLayersSection() {
     offset: ["start start", "end start"]
   });
 
-  const zExpanded = useTransform(scrollYProgress, [0, 0.7], [0, 1]);
+  const [maxZ, setMaxZ] = React.useState(220);
 
-  const tileZ = useTransform(zExpanded, v => `${v * 220}px`);
-  const heatingZ = useTransform(zExpanded, v => `${v * 165}px`);
-  const wiringZ = useTransform(zExpanded, v => `${v * 110}px`);
-  const insulationZ = useTransform(zExpanded, v => `${v * 55}px`);
-  const concreteZ = useTransform(zExpanded, v => `0px`);
+  React.useEffect(() => {
+    const handleResize = () => {
+      setMaxZ(window.innerWidth < 768 ? 220 : 300);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const zExpanded = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+
+  const tileZ = useTransform(zExpanded, v => `${v * maxZ}px`);
+  const heatingZ = useTransform(zExpanded, v => `${v * (maxZ * 0.78)}px`);
+  const wiringZ = useTransform(zExpanded, v => `${v * (maxZ * 0.56)}px`);
+  const insulationZ = useTransform(zExpanded, v => `${v * (maxZ * 0.34)}px`);
+  const concreteZ = useTransform(zExpanded, v => `${v * (maxZ * 0.12)}px`);
 
   const opacityLabels = useTransform(zExpanded, [0.3, 1], [0, 1]);
 
+  const textOpacity = useTransform(scrollYProgress, [0, 0.45, 0.55], [1, 1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 0.45, 0.55], [0, 0, -45]);
+
   return (
-    <section ref={containerRef} className="relative z-20 h-[180vh] md:h-[250vh] bg-white text-matte-black border-b border-sand/30">
+    <section ref={containerRef} className="relative z-20 h-[220vh] md:h-[250vh] bg-white text-matte-black border-b border-sand/30">
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-start pt-12 md:pt-16 overflow-hidden">
 
-        <div className="relative text-center w-full px-6 z-20 mb-12 md:mb-20 mt-4 md:mt-0">
+        <motion.div
+          style={{ opacity: textOpacity, y: textY }}
+          className="relative text-center w-full px-6 z-20 mb-8 md:mb-12 mt-4 md:mt-0 pointer-events-none"
+        >
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-serif italic font-light mb-4 text-matte-black"
+            className="text-4xl md:text-5xl font-serif italic font-black mb-4 !text-black"
           >
             The Anatomy of Excellence
           </motion.h2>
@@ -723,14 +763,14 @@ function ExpertiseLayersSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-lg text-charcoal/70 font-light max-w-2xl mx-auto"
+            className="text-lg !text-black font-bold max-w-2xl mx-auto"
           >
             From the core structural MEP layers to the finest luxury finishes, we engineer every inch.
           </motion.p>
-        </div>
+        </motion.div>
 
         <div
-          className="relative w-[80vw] h-[80vw] max-w-[240px] max-h-[240px] md:max-w-[380px] md:max-h-[380px] translate-y-[180px] md:translate-y-[220px]"
+          className="relative w-[80vw] h-[80vw] max-w-[240px] max-h-[240px] md:max-w-[380px] md:max-h-[380px] translate-y-[100px] md:translate-y-[140px]"
           style={{
             perspective: "1200px",
             transformStyle: "preserve-3d",
@@ -746,11 +786,14 @@ function ExpertiseLayersSection() {
             onMouseEnter={() => setHoveredLayer(1)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 1 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+            <motion.div
+              style={{ opacity: opacityLabels }}
+              className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-30 pointer-events-none"
+            >
+              <span className={`whitespace-nowrap text-[13px] md:text-lg lg:text-xl font-extrabold tracking-[0.15em] md:tracking-[0.25em] uppercase transition-all duration-300 ${hoveredLayer === 1 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/75 md:text-matte-black/85'}`}>
                 Structural Concrete
               </span>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 2: Insulation */}
@@ -762,27 +805,14 @@ function ExpertiseLayersSection() {
             onMouseEnter={() => setHoveredLayer(2)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 2 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
+            <motion.div
+              style={{ opacity: opacityLabels }}
+              className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-30 pointer-events-none"
+            >
+              <span className={`whitespace-nowrap text-[13px] md:text-lg lg:text-xl font-extrabold tracking-[0.15em] md:tracking-[0.25em] uppercase transition-all duration-300 ${hoveredLayer === 2 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/75 md:text-matte-black/85'}`}>
                 Acoustic Insulation
               </span>
-            </div>
-            <div className="hidden md:block absolute top-[30%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 translate-y-1/2 z-20">
-              <motion.div
-                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top right" }}
-                className="absolute top-1/2 right-1/2 flex items-start justify-end pointer-events-auto"
-              >
-                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute top-0 right-0 overflow-visible z-0 translate-x-[1px] -translate-y-[1px]">
-                  <path d="M 0 0 L -10 10 L -25 10" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
-                </svg>
-
-                <div className="bg-white px-2 py-1.5 md:px-5 md:py-2.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-2 md:-translate-x-4 translate-y-3">
-                  <span className={`font-sans font-black text-xs md:text-lg lg:text-xl tracking-[1.5px] uppercase whitespace-nowrap transition-colors duration-300 ${hoveredLayer === 2 ? 'text-gold' : 'text-matte-black'}`}>
-                    Acoustic Insulation
-                  </span>
-                </div>
-              </motion.div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 3: MEP & Wiring */}
@@ -794,29 +824,15 @@ function ExpertiseLayersSection() {
             onMouseEnter={() => setHoveredLayer(3)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 3 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-blue-600/60'}`}>
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%)] bg-[size:30px_30px] pointer-events-none"></div>
+            <motion.div
+              style={{ opacity: opacityLabels }}
+              className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-30 pointer-events-none"
+            >
+              <span className={`whitespace-nowrap text-[13px] md:text-lg lg:text-xl font-extrabold tracking-[0.15em] md:tracking-[0.25em] uppercase transition-all duration-300 ${hoveredLayer === 3 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-blue-700/80 md:text-blue-700/90'}`}>
                 MEP / Wiring
               </span>
-            </div>
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%),linear-gradient(0deg,transparent_49%,rgba(96,165,250,0.5)_50%,transparent_51%)] bg-[size:30px_30px] pointer-events-none"></div>
-
-            <div className="hidden md:block absolute bottom-0 right-[15%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 z-20">
-              <motion.div
-                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }}
-                className="absolute top-1/2 left-1/2 flex items-start pointer-events-auto"
-              >
-                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
-                  <path d="M 0 0 L 10 10 L 25 10" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
-                </svg>
-
-                <div className="bg-white px-2 py-1.5 md:px-5 md:py-2.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-2 md:translate-x-4 translate-y-3">
-                  <span className={`font-sans font-black text-xs md:text-lg lg:text-xl tracking-[1.5px] uppercase whitespace-nowrap transition-colors duration-300 ${hoveredLayer === 3 ? 'text-gold' : 'text-matte-black'}`}>
-                    MEP / Wiring
-                  </span>
-                </div>
-              </motion.div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 4: Heating */}
@@ -828,29 +844,15 @@ function ExpertiseLayersSection() {
             onMouseEnter={() => setHoveredLayer(4)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 4 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-red-500/60'}`}>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(248,113,113,0.3)_0,transparent_10px)] bg-[size:25px_25px] pointer-events-none"></div>
+            <motion.div
+              style={{ opacity: opacityLabels }}
+              className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-30 pointer-events-none"
+            >
+              <span className={`whitespace-nowrap text-[13px] md:text-lg lg:text-xl font-extrabold tracking-[0.15em] md:tracking-[0.25em] uppercase transition-all duration-300 ${hoveredLayer === 4 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-red-600/80 md:text-red-600/90'}`}>
                 Radiant Heating
               </span>
-            </div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(248,113,113,0.3)_0,transparent_10px)] bg-[size:25px_25px] pointer-events-none"></div>
-
-            <div className="hidden md:block absolute top-[20%] left-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20">
-              <motion.div
-                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom right" }}
-                className="absolute bottom-1/2 right-1/2 flex items-end justify-end pointer-events-auto"
-              >
-                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute bottom-0 right-0 overflow-visible z-0 translate-x-[1px] translate-y-[1px]">
-                  <path d="M 0 0 L -10 -10 L -25 -10" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
-                </svg>
-
-                <div className="bg-white px-2 py-1.5 md:px-5 md:py-2.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-2 md:-translate-x-4 -translate-y-6">
-                  <span className={`font-sans font-black text-xs md:text-lg lg:text-xl tracking-[1.5px] uppercase whitespace-nowrap transition-colors duration-300 ${hoveredLayer === 4 ? 'text-gold' : 'text-matte-black'}`}>
-                    Radiant Heating
-                  </span>
-                </div>
-              </motion.div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Layer 5: Tile/Finishes */}
@@ -862,63 +864,19 @@ function ExpertiseLayersSection() {
             onMouseEnter={() => setHoveredLayer(5)}
             onMouseLeave={() => setHoveredLayer(null)}
           >
-            <div className="md:hidden absolute bottom-4 left-4 z-30 pointer-events-none">
-              <span className={`text-[13px] font-extrabold tracking-widest uppercase transition-all duration-300 ${hoveredLayer === 5 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/40'}`}>
-                Marble Finishes
-              </span>
-            </div>
             {/* The Un-compressed Floor Image Hack */}
             <div
               className={`absolute inset-0 bg-cover bg-center pointer-events-none z-0`}
               style={{ backgroundImage: `url(${cardImg})` }}
             />
-
-            <div
-              className="hidden md:block absolute top-0 left-[50%] w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform -translate-x-1/2 -translate-y-1/2 z-20"
-              onMouseEnter={() => setHoveredLayer(5)}
-              onMouseLeave={() => setHoveredLayer(null)}
+            <motion.div
+              style={{ opacity: opacityLabels }}
+              className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-30 pointer-events-none"
             >
-              <motion.div
-                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "bottom center" }}
-                className="absolute bottom-1/2 left-1/2 flex items-end justify-center pointer-events-auto"
-              >
-                {/* Stem goes STRAIGHT UP */}
-                <svg width="60" height="60" className="absolute bottom-0 left-1/2 -translate-x-1/2 overflow-visible z-0 translate-y-[1px]">
-                  <path d="M 0 0 L 0 -40" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
-                </svg>
-
-                <div className="bg-white px-2 py-1.5 md:px-5 md:py-2.5 z-10 shadow-xl border border-sand/40 rounded-[3px] -translate-x-1/2 -translate-y-[24px] md:-translate-y-[48px]">
-                  <span className={`font-sans font-black text-xs md:text-lg lg:text-xl tracking-[1.5px] uppercase whitespace-nowrap transition-colors duration-300 ${hoveredLayer === 5 ? 'text-gold' : 'text-matte-black'}`}>
-                    Premium Marble Finish
-                  </span>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Layer 1 Label Overlay (extracted to be physically above all layers) */}
-          <motion.div
-            style={{ translateZ: concreteZ }}
-            animate={{ scale: hoveredLayer === 1 ? 1.05 : 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="absolute inset-0 pointer-events-none z-[60]"
-          >
-            <div className="hidden md:block absolute top-[80%] right-0 w-3 h-3 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,1),0_0_20px_rgba(197,160,89,1)] border-[2.5px] border-gold transform translate-x-1/2 translate-y-1/2 pointer-events-auto">
-              <motion.div
-                style={{ opacity: opacityLabels, transform: "rotateZ(45deg) rotateX(-60deg)", transformOrigin: "top left" }}
-                className="absolute top-1/2 left-1/2 flex items-start pointer-events-auto"
-              >
-                <svg width="40" height="40" className="md:w-[60px] md:h-[60px] absolute top-0 left-0 overflow-visible z-0 -translate-x-[1px] -translate-y-[1px]">
-                  <path d="M 0 0 L 10 10 L 25 10" fill="transparent" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.8))" />
-                </svg>
-
-                <div className="bg-white px-2 py-1.5 md:px-5 md:py-2.5 z-10 shadow-xl border border-sand/40 rounded-[3px] translate-x-2 md:translate-x-4 translate-y-3">
-                  <span className={`font-sans font-black text-xs md:text-lg lg:text-xl tracking-[1.5px] uppercase whitespace-nowrap transition-colors duration-300 ${hoveredLayer === 1 ? 'text-gold' : 'text-matte-black'}`}>
-                    Structural Concrete
-                  </span>
-                </div>
-              </motion.div>
-            </div>
+              <span className={`whitespace-nowrap text-[13px] md:text-lg lg:text-xl font-extrabold tracking-[0.15em] md:tracking-[0.25em] uppercase transition-all duration-300 ${hoveredLayer === 5 ? 'text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]' : 'text-matte-black/75 md:text-matte-black/85'}`}>
+                Premium Marble Finish
+              </span>
+            </motion.div>
           </motion.div>
 
         </div>
