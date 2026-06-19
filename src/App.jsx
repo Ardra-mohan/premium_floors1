@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring, useMotionValueEvent } from 'framer-motion';
 import { Phone, Mail, MapPin, ChevronRight, Menu, X, Instagram } from 'lucide-react';
 import Lenis from 'lenis';
 
@@ -468,127 +468,202 @@ function App() {
 }
 
 function ServicesSection() {
-  const [cardsOrder, setCardsOrder] = React.useState([0, 1, 2, 3, 4]);
-  const [isFlying, setIsFlying] = React.useState(false);
-  const [direction, setDirection] = React.useState(1); // 1 for right, -1 for left
+  const containerRef = React.useRef(null);
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [windowWidth, setWindowWidth] = React.useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
-  const handleCardClick = (indexInStack) => {
-    // Only allow clicking the top card
-    if (indexInStack !== 0 || isFlying) return;
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    setIsFlying(true);
-    // Randomize fly out direction for organic feel
-    setDirection(Math.random() > 0.5 ? 1 : -1);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-    setTimeout(() => {
-      setCardsOrder(prev => {
-        const next = [...prev];
-        const top = next.shift();
-        next.push(top);
-        return next;
-      });
-      setIsFlying(false);
-    }, 350); // Match animation duration
+  // Dynamically update activeIndex as user scrolls through the 250vh section
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const totalCards = SERVICES_DATA.length;
+    // Map scroll progress (0 to 1) to card indices (0 to totalCards - 1)
+    const index = Math.min(
+      Math.floor(latest * totalCards),
+      totalCards - 1
+    );
+    if (index >= 0 && index < totalCards) {
+      setActiveIndex(index);
+    }
+  });
+
+  const handleCardClick = (index) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const containerTop = rect.top + scrollTop;
+    const containerHeight = rect.height;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate the target scroll position where the clicked card is centered
+    // We want the scroll progress to be at the midpoint of this card's segment
+    const segment = 1 / SERVICES_DATA.length;
+    const targetProgress = index * segment + (segment * 0.35); // offset slightly past start of segment
+    const targetScroll = containerTop + targetProgress * (containerHeight - viewportHeight);
+
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
   };
 
+  const isMobile = windowWidth < 768;
+
   return (
-    <section id="services" className="relative min-h-screen bg-sand/10 py-20 flex flex-col justify-center items-center overflow-hidden border-b border-sand/30">
-      <div className="max-w-7xl mx-auto px-6 mb-12 md:mb-16 text-center w-full z-10">
-        <span className="block text-gold uppercase tracking-[0.25em] text-xs md:text-sm mb-3 font-semibold">
-          Our Specializations
-        </span>
-        <h2 className="text-4xl md:text-6xl font-heading text-matte-black">
-          Signature Services
-        </h2>
-        <p className="text-charcoal/70 font-light max-w-xl mx-auto mt-4 text-sm md:text-base">
-          Click the card to cycle through our turnkey capabilities and technical expertise.
-        </p>
-      </div>
+    <section 
+      ref={containerRef} 
+      id="services" 
+      className="relative h-[400vh] bg-sand/10 border-b border-sand/30"
+    >
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden px-4">
+        
+        {/* Header */}
+        <div className="max-w-7xl mx-auto text-center w-full z-10 mb-6 md:mb-12">
+          <span className="block text-gold uppercase tracking-[0.25em] text-xs md:text-sm mb-2 font-semibold">
+            Our Specializations
+          </span>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading text-matte-black">
+            Signature Services
+          </h2>
+          <p className="text-charcoal/70 font-light max-w-xl mx-auto mt-2 text-xs md:text-sm">
+            Scroll down or click a card/indicator to explore our technical expertise.
+          </p>
+        </div>
 
-      {/* 3D Stack Container */}
-      <div 
-        className="relative w-[300px] md:w-[480px] h-[380px] md:h-[430px] mt-8 flex items-center justify-center select-none"
-        style={{
-          perspective: "1200px",
-          transformStyle: "preserve-3d"
-        }}
-      >
-        {cardsOrder.map((serviceIndex, i) => {
-          const service = SERVICES_DATA[serviceIndex];
-          const isTop = i === 0;
-          
-          // 3D parameters based on stack depth (i)
-          const scale = isTop && isFlying ? 0.95 : 1 - i * 0.05;
-          const yOffset = -i * 18; // offset upwards to stack them
-          const zOffset = -i * 50; // offset in Z space
-          const opacity = 1 - i * 0.18;
-          const zIndex = 10 - i;
+        {/* Stack of Cards Container */}
+        <div 
+          className="relative w-[280px] md:w-[460px] h-[350px] md:h-[420px] flex items-center justify-center select-none"
+          style={{
+            perspective: "1200px",
+            transformStyle: "preserve-3d"
+          }}
+        >
+          {SERVICES_DATA.map((service, i) => {
+            const isActive = i === activeIndex;
+            const diff = i - activeIndex;
+            
+            // Layout offsets based on distance from active card (diff)
+            const xOffset = isMobile ? diff * 16 : diff * 45;
+            const yOffset = Math.abs(diff) * (isMobile ? 18 : 25);
+            const scale = isActive ? 1.02 : 1 - Math.abs(diff) * 0.05;
+            const zIndex = 20 - Math.abs(diff);
+            // Ambient shadow depth: active has high offset, inactive is flatter
+            const shadow = isActive 
+              ? "0 30px 60px -15px rgba(0, 0, 0, 0.25)" 
+              : "0 10px 20px -5px rgba(0, 0, 0, 0.1)";
 
-          // Flyout animations for the top card
-          const animateX = isTop && isFlying ? direction * 380 : 0;
-          const animateRotate = isTop && isFlying ? direction * 25 : 0;
-          const animateOpacity = isTop && isFlying ? 0 : opacity;
+            return (
+              <motion.div
+                key={i}
+                onClick={() => handleCardClick(i)}
+                animate={{
+                  x: xOffset,
+                  y: yOffset,
+                  scale: scale,
+                  zIndex: zIndex,
+                  opacity: 1 - Math.min(Math.abs(diff) * 0.15, 0.4),
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 22,
+                  mass: 1.0
+                }}
+                style={{
+                  boxShadow: shadow,
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden"
+                }}
+                className={`absolute inset-0 w-full h-full bg-white/95 border ${isActive ? 'border-gold/40' : 'border-sand/30'} rounded-lg p-6 md:p-10 flex flex-col justify-between cursor-pointer group`}
+              >
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    {/* Top indicator */}
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-gold font-serif italic text-base md:text-lg font-light">
+                        0{i + 1}
+                      </span>
+                      {isActive && (
+                        <span className="text-[10px] text-gold uppercase tracking-widest font-semibold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 shadow-sm animate-pulse">
+                          Active
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* Service Title */}
+                    <h3 className="text-lg md:text-2xl font-serif italic text-matte-black mb-3 border-b border-sand/20 pb-3">
+                      {service.title}
+                    </h3>
+                    
+                    {/* Service Items (Animated Height and Opacity) */}
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        height: isActive ? "auto" : 0,
+                        opacity: isActive ? 1 : 0,
+                        marginTop: isActive ? 12 : 0
+                      }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <ul className="space-y-2 md:space-y-3">
+                        {service.items.map((item, idx) => (
+                          <li key={idx} className="flex items-start text-xs md:text-sm text-charcoal/80 font-light leading-relaxed">
+                            <span className="text-gold mr-2 mt-1.5 text-[8px] md:text-[9px]">◆</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  </div>
 
-          return (
-            <motion.div
-              key={serviceIndex}
-              onClick={() => handleCardClick(i)}
-              animate={{
-                x: animateX,
-                y: yOffset,
-                z: zOffset,
-                scale: scale,
-                rotate: animateRotate,
-                opacity: animateOpacity,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 220,
-                damping: 24,
-              }}
-              className={`absolute inset-0 w-full h-full bg-white/95 border border-sand/30 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-lg p-6 md:p-10 flex flex-col justify-between cursor-pointer group select-none ${isTop ? 'pointer-events-auto' : 'pointer-events-none'}`}
-              style={{
-                zIndex: zIndex,
-                transformStyle: "preserve-3d",
-                backfaceVisibility: "hidden"
-              }}
-            >
-              {/* Card content */}
-              <div>
-                <div className="flex justify-between items-start mb-6">
-                  <span className="text-gold font-serif italic text-lg md:text-xl font-light">
-                    0{serviceIndex + 1}
-                  </span>
-                  {isTop && (
-                    <span className="text-[10px] md:text-xs text-gold uppercase tracking-widest font-semibold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 shadow-sm animate-pulse">
-                      Active
-                    </span>
+                  {isActive && (
+                    <div className="mt-4 border-t border-sand/10 pt-3 flex justify-between items-center text-[10px] text-gold uppercase tracking-[0.15em] font-semibold">
+                      <span>Signature Service</span>
+                      <ChevronRight size={12} className="translate-x-0" />
+                    </div>
                   )}
                 </div>
-                
-                <h3 className="text-2xl md:text-3xl font-serif italic text-matte-black mb-6 border-b border-sand/20 pb-4">
-                  {service.title}
-                </h3>
-                
-                <ul className="space-y-3 md:space-y-4">
-                  {service.items.map((item, idx) => (
-                    <li key={idx} className="flex items-start text-sm md:text-base text-charcoal/80 font-light leading-relaxed">
-                      <span className="text-gold mr-3 mt-1.5 text-[8px] md:text-[10px]">◆</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </motion.div>
+            );
+          })}
+        </div>
 
-              {isTop && (
-                <div className="mt-6 border-t border-sand/10 pt-4 flex justify-between items-center text-[10px] md:text-xs text-gold uppercase tracking-[0.15em] font-semibold group-hover:text-gold/80 transition-colors">
-                  <span>Click Card to Cycle</span>
-                  <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                </div>
-              )}
-            </motion.div>
-          );
-        })}
+        {/* Custom Dot/Number Indicator Controls */}
+        <div className="flex items-center justify-center space-x-6 mt-12 md:mt-16 z-20">
+          {SERVICES_DATA.map((_, i) => {
+            const isActive = i === activeIndex;
+            return (
+              <button
+                key={i}
+                onClick={() => handleCardClick(i)}
+                className="group flex flex-col items-center focus:outline-none cursor-pointer"
+              >
+                <span className={`text-[10px] md:text-xs tracking-widest font-heading transition-colors duration-300 ${isActive ? 'text-gold font-bold' : 'text-charcoal/40 group-hover:text-charcoal/70'}`}>
+                  0{i + 1}
+                </span>
+                <motion.div 
+                  className="h-[2px] bg-gold mt-1"
+                  animate={{
+                    width: isActive ? (isMobile ? 16 : 24) : 0,
+                    opacity: isActive ? 1 : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </button>
+            );
+          })}
+        </div>
+
       </div>
     </section>
   );
