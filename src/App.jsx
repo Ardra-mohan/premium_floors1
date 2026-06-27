@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring, useMotionValueEvent } from 'framer-motion';
-import { Phone, Mail, MapPin, ChevronRight, Menu, X, Instagram } from 'lucide-react';
+import { Phone, Mail, MapPin, ChevronRight, Menu, X, Instagram, Layers, Paintbrush, Cpu, Sparkles, Wrench } from 'lucide-react';
 import Lenis from 'lenis';
 
 import logoImg from './assets/logo.png';
@@ -22,24 +22,49 @@ import epoxy7Img from './assets/epoxy7.png';
 
 const SERVICES_DATA = [
   {
+    id: "01",
     title: "Flooring & Tiling",
-    items: ["Marble, porcelain, ceramic, mosaic", "Natural stone installations", "Custom engraving & ornamental"]
+    description: "Bespoke stone and marble crafting for high-end residential and commercial spaces.",
+    icon: Layers,
+    items: ["Marble, porcelain, ceramic, mosaic", "Natural stone installations", "Custom engraving & ornamental"],
+    cta: "Explore Flooring Gallery",
+    image: palmVillaImg
   },
   {
+    id: "02",
     title: "Interior Fit-Out",
-    items: ["False ceilings & partitions", "Luxury plastering & painting", "Custom woodwork & wallpaper"]
+    description: "Complete architectural finishes from luxury plastering to custom false ceilings.",
+    icon: Paintbrush,
+    items: ["False ceilings & partitions", "Luxury plastering & painting", "Custom woodwork & wallpaper"],
+    cta: "View Interior Projects",
+    image: falseCeilingImg
   },
   {
+    id: "03",
     title: "MEP Solutions",
-    items: ["Electromechanical systems", "HVAC (AC & ventilation)", "Premium plumbing & sanitary"]
+    description: "High-performance electromechanical systems designed for luxury environments.",
+    icon: Cpu,
+    items: ["Electromechanical systems", "HVAC (AC & ventilation)", "Premium plumbing & sanitary"],
+    cta: "Consult Our Engineers",
+    image: hubImg
   },
   {
+    id: "04",
     title: "Luxury Installations",
-    items: ["Swimming pools & deck flooring", "High-end decorative finishes", "Bespoke architectural elements"]
+    description: "Exquisite outdoor and indoor features, custom pools, and decorative finishes.",
+    icon: Sparkles,
+    items: ["Swimming pools & deck flooring", "High-end decorative finishes", "Bespoke architectural elements"],
+    cta: "Discover Installations",
+    image: fiveStarHotelImg
   },
   {
+    id: "05",
     title: "Maintenance & Repairs",
-    items: ["Preventative maintenance", "Renovation works", "System upgrades"]
+    description: "Comprehensive maintenance to preserve the integrity and beauty of your property.",
+    icon: Wrench,
+    items: ["Preventative maintenance", "Renovation works", "System upgrades"],
+    cta: "Schedule Maintenance",
+    image: penthouseImg
   }
 ];
 
@@ -289,12 +314,17 @@ function App() {
       </section>
 
       {/* Projects Showcase */}
-      <section id="projects" className="py-24 md:py-32 bg-charcoal text-ivory">
+      <section id="projects" className="py-24 md:py-32 bg-charcoal text-ivory overflow-hidden">
         <div className="px-6 max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-heading mb-16 text-white border-b border-sand/20 pb-8">Featured Work</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img={warehouseImg} />
+          {/* Grid Layout below */}
+          <div className="mt-8">
+            <h3 className="text-2xl md:text-4xl font-heading mb-12 text-white border-b border-white/10 pb-6">
+              Complete Portfolio Index
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+              <ProjectCard title="Warehouse Facilities" category="Heavy-Duty Epoxy" img={warehouseImg} />
             <ProjectCard title="Hospital & Medical" category="Hygienic Epoxy" img="/extracted/brochure_img_80.jpg" />
             <ProjectCard title="Parking Structures" category="High-Traction" img="/extracted/brochure_img_55.jpg" />
             <ProjectCard title="Shopping Malls" category="Decorative Finish" img="/extracted/brochure_img_84.jpg" />
@@ -310,7 +340,8 @@ function App() {
             <ProjectCard title="AC Electromechanical Works" category="Systems" img="/extracted/brochure_img_62.jpg" />
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Why Choose Us */}
       <section className="py-24 bg-ivory text-charcoal px-6 border-b border-sand/30">
@@ -468,8 +499,7 @@ function App() {
 }
 
 function ServicesSection() {
-  const containerRef = React.useRef(null);
-  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [active, setActive] = React.useState(null);
   const [windowWidth, setWindowWidth] = React.useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
   React.useEffect(() => {
@@ -478,194 +508,278 @@ function ServicesSection() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Dynamically update activeIndex as user scrolls through the 250vh section
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const totalCards = SERVICES_DATA.length;
-    // Map scroll progress (0 to 1) to card indices (0 to totalCards - 1)
-    const index = Math.min(
-      Math.floor(latest * totalCards),
-      totalCards - 1
-    );
-    if (index >= 0 && index < totalCards) {
-      setActiveIndex(index);
-    }
-  });
-
-  const handleCardClick = (index) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const containerTop = rect.top + scrollTop;
-    const containerHeight = rect.height;
-    const viewportHeight = window.innerHeight;
-
-    // Calculate the target scroll position where the clicked card is centered
-    // We want the scroll progress to be at the midpoint of this card's segment
-    const segment = 1 / SERVICES_DATA.length;
-    const targetProgress = index * segment + (segment * 0.35); // offset slightly past start of segment
-    const targetScroll = containerTop + targetProgress * (containerHeight - viewportHeight);
-
-    window.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth'
-    });
-  };
-
   const isMobile = windowWidth < 768;
 
   return (
-    <section 
-      ref={containerRef} 
-      id="services" 
-      className="relative h-[400vh] bg-sand/10 border-b border-sand/30"
-    >
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden px-4">
-        
+    <section id="services" className="relative py-24 md:py-32 bg-[#0a0a0a] border-b border-white/10 overflow-hidden">
+      {/* Background neon glows */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-gold/5 blur-[80px] md:blur-[150px]" />
+        <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-gold/5 blur-[80px] md:blur-[150px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="max-w-7xl mx-auto text-center w-full z-10 mb-6 md:mb-12">
-          <span className="block text-gold uppercase tracking-[0.25em] text-xs md:text-sm mb-2 font-semibold">
-            Our Specializations
+        <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
+          <span className="block text-gold uppercase tracking-[0.25em] text-xs md:text-sm mb-3 font-bold">
+            Signature Capabilities
           </span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading text-matte-black">
-            Signature Services
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading text-white tracking-wide">
+            Our Elite Services
           </h2>
-          <p className="text-charcoal/70 font-light max-w-xl mx-auto mt-2 text-xs md:text-sm">
-            Scroll down or click a card/indicator to explore our technical expertise.
+          <p className="text-sand/60 font-body font-light max-w-xl mx-auto mt-4 text-sm md:text-base leading-relaxed">
+            Hover or click to expand our bespoke turnkey solutions and discover how we engineer luxury finishes from core MEP to final marble polish.
           </p>
         </div>
 
-        {/* Stack of Cards Container */}
-        <div 
-          className="relative w-[280px] md:w-[460px] h-[350px] md:h-[420px] flex items-center justify-center select-none"
-          style={{
-            perspective: "1200px",
-            transformStyle: "preserve-3d"
-          }}
-        >
-          {SERVICES_DATA.map((service, i) => {
-            const isActive = i === activeIndex;
-            const diff = i - activeIndex;
-            
-            // Layout offsets based on distance from active card (diff)
-            const xOffset = isMobile ? diff * 16 : diff * 45;
-            const yOffset = Math.abs(diff) * (isMobile ? 18 : 25);
-            const scale = isActive ? 1.02 : 1 - Math.abs(diff) * 0.05;
-            const zIndex = 20 - Math.abs(diff);
-            // Ambient shadow depth: active has high offset, inactive is flatter
-            const shadow = isActive 
-              ? "0 30px 60px -15px rgba(0, 0, 0, 0.25)" 
-              : "0 10px 20px -5px rgba(0, 0, 0, 0.1)";
-
-            return (
-              <motion.div
-                key={i}
-                onClick={() => handleCardClick(i)}
-                animate={{
-                  x: xOffset,
-                  y: yOffset,
-                  scale: scale,
-                  zIndex: zIndex,
-                  opacity: 1 - Math.min(Math.abs(diff) * 0.15, 0.4),
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 120,
-                  damping: 22,
-                  mass: 1.0
-                }}
-                style={{
-                  boxShadow: shadow,
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden"
-                }}
-                className={`absolute inset-0 w-full h-full bg-white/95 border ${isActive ? 'border-gold/40' : 'border-sand/30'} rounded-lg p-6 md:p-10 flex flex-col justify-between cursor-pointer group`}
-              >
-                <div className="flex flex-col h-full justify-between">
-                  <div>
-                    {/* Top indicator */}
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-gold font-serif italic text-base md:text-lg font-light">
-                        0{i + 1}
-                      </span>
-                      {isActive && (
-                        <span className="text-[10px] text-gold uppercase tracking-widest font-semibold border border-gold/30 rounded-full px-3 py-1 bg-gold/5 shadow-sm animate-pulse">
-                          Active
-                        </span>
-                      )}
-                    </div>
-                    
-                    {/* Service Title */}
-                    <h3 className="text-lg md:text-2xl font-serif italic text-matte-black mb-3 border-b border-sand/20 pb-3">
-                      {service.title}
-                    </h3>
-                    
-                    {/* Service Items (Animated Height and Opacity) */}
-                    <motion.div
-                      initial={false}
-                      animate={{
-                        height: isActive ? "auto" : 0,
-                        opacity: isActive ? 1 : 0,
-                        marginTop: isActive ? 12 : 0
-                      }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <ul className="space-y-2 md:space-y-3">
-                        {service.items.map((item, idx) => (
-                          <li key={idx} className="flex items-start text-xs md:text-sm text-charcoal/80 font-light leading-relaxed">
-                            <span className="text-gold mr-2 mt-1.5 text-[8px] md:text-[9px]">◆</span>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  </div>
-
-                  {isActive && (
-                    <div className="mt-4 border-t border-sand/10 pt-3 flex justify-between items-center text-[10px] text-gold uppercase tracking-[0.15em] font-semibold">
-                      <span>Signature Service</span>
-                      <ChevronRight size={12} className="translate-x-0" />
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Custom Dot/Number Indicator Controls */}
-        <div className="flex items-center justify-center space-x-6 mt-12 md:mt-16 z-20">
-          {SERVICES_DATA.map((_, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <button
-                key={i}
-                onClick={() => handleCardClick(i)}
-                className="group flex flex-col items-center focus:outline-none cursor-pointer"
-              >
-                <span className={`text-[10px] md:text-xs tracking-widest font-heading transition-colors duration-300 ${isActive ? 'text-gold font-bold' : 'text-charcoal/40 group-hover:text-charcoal/70'}`}>
-                  0{i + 1}
-                </span>
-                <motion.div 
-                  className="h-[2px] bg-gold mt-1"
-                  animate={{
-                    width: isActive ? (isMobile ? 16 : 24) : 0,
-                    opacity: isActive ? 1 : 0
-                  }}
-                  transition={{ duration: 0.3 }}
-                />
-              </button>
-            );
-          })}
-        </div>
-
+        {/* Expanding Cards Layout */}
+        {isMobile ? (
+          // Mobile: Vertical Accordion Layout
+          <div className="flex flex-col space-y-4">
+            {SERVICES_DATA.map((service, idx) => (
+              <MobileServiceCard 
+                key={service.id}
+                service={service}
+                index={idx}
+                active={active}
+                setActive={setActive}
+              />
+            ))}
+          </div>
+        ) : (
+          // Desktop: Horizontal Expanding Flex Layout
+          <div className="flex w-full h-[550px] gap-4" onMouseLeave={() => setActive(null)}>
+            {SERVICES_DATA.map((service, idx) => (
+              <DesktopServiceCard 
+                key={service.id}
+                service={service}
+                index={idx}
+                active={active}
+                setActive={setActive}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
+  );
+}
+
+function DesktopServiceCard({ service, index, active, setActive }) {
+  const isActive = active === index;
+  const isAnyActive = active !== null;
+  const isShrunk = isAnyActive && !isActive;
+  
+  const Icon = service.icon;
+
+  return (
+    <motion.div
+      onMouseEnter={() => setActive(index)}
+      onClick={() => setActive(index)}
+      animate={{
+        flexGrow: isActive ? 2.8 : isShrunk ? 0.65 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 100, damping: 20, mass: 0.8 }}
+      className={`relative h-full rounded-2xl overflow-hidden cursor-pointer border ${
+        isActive 
+          ? 'border-gold/40 shadow-[0_0_40px_rgba(197,160,89,0.2)] bg-[#121212]/95' 
+          : 'border-white/5 bg-[#121212]/80'
+      } transition-shadow duration-500 flex flex-col justify-between p-8 select-none`}
+    >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <motion.img 
+          src={service.image} 
+          alt={service.title} 
+          animate={{
+            scale: isActive ? 1.05 : 1,
+            filter: isShrunk ? "blur(2px) brightness(0.5)" : "blur(0px) brightness(0.8)"
+          }}
+          transition={{ duration: 0.6 }}
+          className="w-full h-full object-cover"
+        />
+        {/* Dark Vignette Overlay */}
+        <motion.div 
+          animate={{
+            background: isActive 
+              ? "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.25) 100%)"
+              : "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 100%)"
+          }}
+          className="absolute inset-0 z-0" 
+        />
+      </div>
+
+      {/* Top Header */}
+      <div className="relative z-10 flex justify-between items-center w-full">
+        <motion.div 
+          animate={{
+            scale: isActive ? 1.15 : 1,
+            borderColor: isActive ? "rgba(197,160,89,0.5)" : "rgba(255,255,255,0.1)",
+            backgroundColor: isActive ? "rgba(197,160,89,0.1)" : "rgba(255,255,255,0.05)"
+          }}
+          className="w-12 h-12 rounded-full border flex items-center justify-center text-gold transition-colors duration-300"
+        >
+          <Icon size={20} />
+        </motion.div>
+        <span className="text-gold/80 font-serif italic text-xl font-light">
+          {service.id}
+        </span>
+      </div>
+
+      {/* Bottom Content Area */}
+      <div className="relative z-10 flex flex-col justify-end w-full">
+        {/* Always Visible Title */}
+        <h3 className="text-xl lg:text-3xl font-serif italic text-white leading-snug">
+          {service.title}
+        </h3>
+
+        {/* Short Teaser (Fade out when expanded) */}
+        <motion.div
+          animate={{
+            height: isActive ? 0 : "auto",
+            opacity: isActive ? 0 : 0.85,
+            marginTop: isActive ? 0 : 8
+          }}
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <p className="text-xs text-sand/80 font-light font-body line-clamp-2 leading-relaxed">
+            {service.description}
+          </p>
+        </motion.div>
+
+        {/* Expanded Details */}
+        <motion.div
+          initial={false}
+          animate={{
+            height: isActive ? "auto" : 0,
+            opacity: isActive ? 1 : 0,
+            marginTop: isActive ? 16 : 0
+          }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="overflow-hidden"
+        >
+          <p className="text-sm text-white/80 font-light font-body leading-relaxed mb-6">
+            {service.description}
+          </p>
+
+          {/* Benefits/Items list */}
+          <ul className="space-y-3 mb-8">
+            {service.items.map((item, idx) => (
+              <motion.li 
+                key={idx} 
+                initial={{ opacity: 0, x: -10 }}
+                animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                transition={{ delay: isActive ? idx * 0.08 + 0.15 : 0 }}
+                className="flex items-center text-xs text-white/70 font-light font-body"
+              >
+                <span className="text-gold mr-3 text-[7px]">◆</span>
+                <span>{item}</span>
+              </motion.li>
+            ))}
+          </ul>
+
+          {/* CTA Link */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ delay: 0.4 }}
+          >
+            <a 
+              href="#contact"
+              className="inline-flex items-center gap-2 bg-gold hover:bg-white text-matte-black px-5 py-2.5 text-xs uppercase tracking-widest font-bold transition-all duration-300 rounded-sm shadow-lg hover:scale-105 active:scale-95"
+            >
+              <span>{service.cta}</span>
+              <ChevronRight size={14} />
+            </a>
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+function MobileServiceCard({ service, index, active, setActive }) {
+  const isActive = active === index;
+  const Icon = service.icon;
+
+  return (
+    <div
+      onClick={() => setActive(isActive ? null : index)}
+      className={`relative w-full rounded-xl overflow-hidden border ${
+        isActive 
+          ? 'border-gold/45 shadow-[0_0_30px_rgba(197,160,89,0.15)] bg-black/60' 
+          : 'border-white/5 bg-[#121212]/80'
+      } backdrop-blur-md p-5 flex flex-col justify-between transition-all duration-300`}
+    >
+      {/* Background Image (Lower opacity for accordion backing) */}
+      <div className="absolute inset-0 z-0 opacity-15">
+        <img 
+          src={service.image} 
+          alt={service.title} 
+          className="w-full h-full object-cover filter blur-[1px]" 
+        />
+      </div>
+
+      {/* Header bar */}
+      <div className="relative z-10 flex justify-between items-center w-full">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-10 h-10 rounded-full border border-gold/25 bg-gold/5 flex items-center justify-center text-gold">
+            <Icon size={18} />
+          </div>
+          <h3 className="text-base font-serif italic text-white">
+            {service.title}
+          </h3>
+        </div>
+        <span className="text-gold/60 text-xs font-semibold font-body">
+          {service.id}
+        </span>
+      </div>
+
+      {/* Content area */}
+      <motion.div
+        initial={false}
+        animate={{
+          height: isActive ? "auto" : 0,
+          opacity: isActive ? 1 : 0,
+          marginTop: isActive ? 16 : 0
+        }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="relative z-10 overflow-hidden"
+      >
+        <p className="text-xs text-white/70 font-light font-body leading-relaxed mb-4">
+          {service.description}
+        </p>
+        
+        {/* Items List */}
+        <ul className="space-y-2 mb-6">
+          {service.items.map((item, idx) => (
+            <li key={idx} className="flex items-center text-[11px] text-white/60 font-light font-body">
+              <span className="text-gold mr-2.5 text-[6px]">◆</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        {/* CTA Button */}
+        <a 
+          href="#contact"
+          className="inline-flex items-center gap-1.5 bg-gold hover:bg-white text-matte-black px-4 py-2 text-[10px] uppercase tracking-widest font-bold transition-all duration-300 rounded-sm shadow-md"
+        >
+          <span>{service.cta}</span>
+          <ChevronRight size={12} />
+        </a>
+      </motion.div>
+
+      {/* Compact Teaser (only visible when not active) */}
+      {!isActive && (
+        <div className="relative z-10 mt-3 pt-3 border-t border-white/5">
+          <p className="text-[11px] text-sand/50 font-light font-body line-clamp-1">
+            {service.description}
+          </p>
+        </div>
+      )}
+    </div>
   );
 }
 
